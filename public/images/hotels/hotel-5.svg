@@ -1,0 +1,77 @@
+<svg width="400" height="300" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="skyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#87CEEB;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#E0F6FF;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="buildingGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F5F5F5;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#E0E0E0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Sky background -->
+  <rect width="400" height="300" fill="url(#skyGradient)"/>
+  
+  <!-- Clouds -->
+  <ellipse cx="80" cy="40" rx="25" ry="12" fill="#FFFFFF" opacity="0.8"/>
+  <ellipse cx="95" cy="35" rx="20" ry="10" fill="#FFFFFF" opacity="0.8"/>
+  <ellipse cx="320" cy="50" rx="30" ry="15" fill="#FFFFFF" opacity="0.7"/>
+  
+  <!-- Luxury hotel building -->
+  <rect x="50" y="120" width="300" height="180" fill="url(#buildingGradient)" rx="5"/>
+  
+  <!-- Hotel floors with windows -->
+  <!-- Floor 1 -->
+  <rect x="70" y="250" width="25" height="35" fill="#4A90E2" opacity="0.7" rx="2"/>
+  <rect x="105" y="250" width="25" height="35" fill="#4A90E2" opacity="0.5" rx="2"/>
+  <rect x="140" y="250" width="25" height="35" fill="#4A90E2" opacity="0.7" rx="2"/>
+  <rect x="175" y="250" width="25" height="35" fill="#4A90E2" opacity="0.6" rx="2"/>
+  <rect x="210" y="250" width="25" height="35" fill="#4A90E2" opacity="0.5" rx="2"/>
+  <rect x="245" y="250" width="25" height="35" fill="#4A90E2" opacity="0.7" rx="2"/>
+  <rect x="280" y="250" width="25" height="35" fill="#4A90E2" opacity="0.6" rx="2"/>
+  <rect x="315" y="250" width="25" height="35" fill="#4A90E2" opacity="0.5" rx="2"/>
+  
+  <!-- Floor 2 -->
+  <rect x="70" y="205" width="25" height="35" fill="#4A90E2" opacity="0.6" rx="2"/>
+  <rect x="105" y="205" width="25" height="35" fill="#4A90E2" opacity="0.7" rx="2"/>
+  <rect x="140" y="205" width="25" height="35" fill="#4A90E2" opacity="0.5" rx="2"/>
+  <rect x="175" y="205" width="25" height="35" fill="#4A90E2" opacity="0.7" rx="2"/>
+  <rect x="210" y="205" width="25" height="35" fill="#4A90E2" opacity="0.6" rx="2"/>
+  <rect x="245" y="205" width="25" height="35" fill="#4A90E2" opacity="0.5" rx="2"/>
+  <rect x="280" y="205" width="25" height="35" fill="#4A90E2" opacity="0.7" rx="2"/>
+  <rect x="315" y="205" width="25" height="35" fill="#4A90E2" opacity="0.6" rx="2"/>
+  
+  <!-- Floor 3 -->
+  <rect x="70" y="160" width="25" height="35" fill="#4A90E2" opacity="0.5" rx="2"/>
+  <rect x="105" y="160" width="25" height="35" fill="#4A90E2" opacity="0.6" rx="2"/>
+  <rect x="140" y="160" width="25" height="35" fill="#4A90E2" opacity="0.7" rx="2"/>
+  <rect x="175" y="160" width="25" height="35" fill="#4A90E2" opacity="0.5" rx="2"/>
+  <rect x="210" y="160" width="25" height="35" fill="#4A90E2" opacity="0.7" rx="2"/>
+  <rect x="245" y="160" width="25" height="35" fill="#4A90E2" opacity="0.6" rx="2"/>
+  <rect x="280" y="160" width="25" height="35" fill="#4A90E2" opacity="0.5" rx="2"/>
+  <rect x="315" y="160" width="25" height="35" fill="#4A90E2" opacity="0.7" rx="2"/>
+  
+  <!-- Hotel entrance -->
+  <rect x="180" y="250" width="40" height="50" fill="#1D8BFF" opacity="0.8" rx="3"/>
+  <rect x="185" y="255" width="30" height="40" fill="#FFFFFF" opacity="0.9" rx="2"/>
+  
+  <!-- Hotel sign -->
+  <rect x="160" y="130" width="80" height="20" fill="#1D8BFF" rx="3"/>
+  <text x="200" y="145" font-family="Arial, sans-serif" font-size="12" fill="#FFFFFF" text-anchor="middle" font-weight="bold">HOTEL</text>
+  
+  <!-- Palm trees -->
+  <ellipse cx="30" cy="280" rx="8" ry="20" fill="#228B22"/>
+  <ellipse cx="25" cy="275" rx="12" ry="8" fill="#32CD32"/>
+  <ellipse cx="35" cy="275" rx="12" ry="8" fill="#32CD32"/>
+  
+  <ellipse cx="370" cy="280" rx="8" ry="20" fill="#228B22"/>
+  <ellipse cx="365" cy="275" rx="12" ry="8" fill="#32CD32"/>
+  <ellipse cx="375" cy="275" rx="12" ry="8" fill="#32CD32"/>
+  
+  <!-- Ground -->
+  <rect x="0" y="290" width="400" height="10" fill="#90EE90"/>
+  
+  <!-- Hotel reflection -->
+  <rect x="50" y="300" width="300" height="30" fill="url(#buildingGradient)" opacity="0.2" rx="5" transform="scale(1, -0.3)"/>
+</svg>

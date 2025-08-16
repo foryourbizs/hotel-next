@@ -1,0 +1,12 @@
+<svg width="60" height="40" viewBox="0 0 60 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- ePrivacy certification badge -->
+  <rect width="60" height="40" fill="#FFFFFF" stroke="#E0E0E0" stroke-width="1" rx="4"/>
+  
+  <!-- Privacy icon -->
+  <rect x="24" y="12" width="12" height="8" fill="none" stroke="#22C55E" stroke-width="2" rx="6"/>
+  <rect x="26" y="18" width="8" height="8" fill="#22C55E" rx="2"/>
+  
+  <!-- Text -->
+  <text x="30" y="32" font-family="Arial, sans-serif" font-size="6" fill="#666666" text-anchor="middle" font-weight="bold">e-Privacy</text>
+  <text x="30" y="38" font-family="Arial, sans-serif" font-size="6" fill="#666666" text-anchor="middle">인증</text>
+</svg>

@@ -1,0 +1,23 @@
+<svg width="400" height="300" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="hotel3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#E8F5E8;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#D4F4D4;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="400" height="300" fill="url(#hotel3)"/>
+  <!-- 바다 -->
+  <rect x="0" y="200" width="400" height="100" fill="#4DA3FF" opacity="0.6"/>
+  <!-- 해변 호텔 -->
+  <rect x="100" y="100" width="200" height="120" rx="8" fill="#34C759" opacity="0.8"/>
+  <!-- 발코니 -->
+  <rect x="120" y="120" width="160" height="40" rx="4" fill="white" opacity="0.8"/>
+  <!-- 창문들 -->
+  <rect x="130" y="160" width="15" height="15" rx="2" fill="white"/>
+  <rect x="150" y="160" width="15" height="15" rx="2" fill="white"/>
+  <rect x="235" y="160" width="15" height="15" rx="2" fill="white"/>
+  <rect x="255" y="160" width="15" height="15" rx="2" fill="white"/>
+  <!-- 해변 우산 -->
+  <circle cx="320" cy="210" r="20" fill="#FF2D55" opacity="0.8"/>
+  <rect x="318" y="210" width="4" height="30" fill="#8B5A3C"/>
+</svg>

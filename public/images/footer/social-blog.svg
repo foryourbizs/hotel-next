@@ -1,0 +1,13 @@
+<svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Blog icon -->
+  <rect x="3" y="3" width="24" height="24" fill="#FF6B35" rx="6"/>
+  
+  <!-- Document icon -->
+  <rect x="8" y="8" width="14" height="16" fill="#FFFFFF" rx="2"/>
+  
+  <!-- Text lines -->
+  <line x1="10" y1="12" x2="20" y2="12" stroke="#FF6B35" stroke-width="1"/>
+  <line x1="10" y1="15" x2="18" y2="15" stroke="#FF6B35" stroke-width="1"/>
+  <line x1="10" y1="18" x2="20" y2="18" stroke="#FF6B35" stroke-width="1"/>
+  <line x1="10" y1="21" x2="16" y2="21" stroke="#FF6B35" stroke-width="1"/>
+</svg>

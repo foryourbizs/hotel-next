@@ -1,0 +1,21 @@
+<svg width="400" height="300" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="400" height="300" fill="#F5F5F5"/>
+  
+  <!-- Border -->
+  <rect x="1" y="1" width="398" height="298" fill="none" stroke="#E0E0E0" stroke-width="2" stroke-dasharray="8,8"/>
+  
+  <!-- Image icon -->
+  <g transform="translate(175, 125)">
+    <!-- Frame -->
+    <rect x="0" y="0" width="50" height="40" fill="none" stroke="#C0C0C0" stroke-width="2" rx="4"/>
+    <!-- Mountain -->
+    <path d="M5 30 L15 20 L25 25 L35 15 L45 25 L45 35 L5 35 Z" fill="#D0D0D0"/>
+    <!-- Sun -->
+    <circle cx="37" cy="12" r="4" fill="#E0E0E0"/>
+  </g>
+  
+  <!-- Text -->
+  <text x="200" y="190" font-family="Arial, sans-serif" font-size="14" fill="#999999" text-anchor="middle">이미지를 준비중입니다</text>
+  <text x="200" y="210" font-family="Arial, sans-serif" font-size="12" fill="#BBBBBB" text-anchor="middle">Image loading...</text>
+</svg>

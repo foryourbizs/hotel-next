@@ -1,0 +1,10 @@
+<svg width="120" height="36" viewBox="0 0 120 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- ServiceName logo in black -->
+  <rect x="5" y="8" width="20" height="20" fill="#000000" rx="3"/>
+  <rect x="8" y="11" width="14" height="14" fill="#FFFFFF" rx="2"/>
+  <rect x="10" y="13" width="10" height="4" fill="#000000" rx="1"/>
+  <rect x="10" y="19" width="10" height="4" fill="#000000" rx="1"/>
+  
+  <!-- Text -->
+  <text x="32" y="23" font-family="Arial, sans-serif" font-size="14" fill="#000000" font-weight="bold">ServiceName</text>
+</svg>
