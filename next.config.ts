@@ -1,6 +1,20 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'image.goodchoice.kr',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'www.goodchoice.kr',
+        pathname: '/**',
+      },
+    ],
+  },
   // eslint: {
   //   // 빌드 시 ESLint 에러를 무시 (개발용 템플릿이므로)
   //   ignoreDuringBuilds: true,

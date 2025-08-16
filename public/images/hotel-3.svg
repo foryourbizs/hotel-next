@@ -1,0 +1,40 @@
+<svg width="400" height="300" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="300" fill="url(#city)"/>
+  <rect x="60" y="120" width="80" height="150" fill="#475569" opacity="0.9"/>
+  <rect x="160" y="90" width="80" height="180" fill="#334155" opacity="0.9"/>
+  <rect x="260" y="110" width="80" height="160" fill="#475569" opacity="0.9"/>
+  
+  <!-- Windows for building 1 -->
+  <rect x="70" y="130" width="15" height="20" fill="#FEF3C7" opacity="0.8"/>
+  <rect x="95" y="130" width="15" height="20" fill="#FEF3C7" opacity="0.8"/>
+  <rect x="120" y="130" width="15" height="20" fill="#FEF3C7" opacity="0.8"/>
+  <rect x="70" y="160" width="15" height="20" fill="#FEF3C7" opacity="0.8"/>
+  <rect x="95" y="160" width="15" height="20" fill="#FEF3C7" opacity="0.8"/>
+  <rect x="120" y="160" width="15" height="20" fill="#FEF3C7" opacity="0.8"/>
+  
+  <!-- Windows for building 2 -->
+  <rect x="170" y="100" width="15" height="20" fill="#FEF3C7" opacity="0.8"/>
+  <rect x="195" y="100" width="15" height="20" fill="#FEF3C7" opacity="0.8"/>
+  <rect x="220" y="100" width="15" height="20" fill="#FEF3C7" opacity="0.8"/>
+  <rect x="170" y="130" width="15" height="20" fill="#FEF3C7" opacity="0.8"/>
+  <rect x="195" y="130" width="15" height="20" fill="#FEF3C7" opacity="0.8"/>
+  <rect x="220" y="130" width="15" height="20" fill="#FEF3C7" opacity="0.8"/>
+  
+  <!-- Windows for building 3 -->
+  <rect x="270" y="120" width="15" height="20" fill="#FEF3C7" opacity="0.8"/>
+  <rect x="295" y="120" width="15" height="20" fill="#FEF3C7" opacity="0.8"/>
+  <rect x="320" y="120" width="15" height="20" fill="#FEF3C7" opacity="0.8"/>
+  <rect x="270" y="150" width="15" height="20" fill="#FEF3C7" opacity="0.8"/>
+  <rect x="295" y="150" width="15" height="20" fill="#FEF3C7" opacity="0.8"/>
+  <rect x="320" y="150" width="15" height="20" fill="#FEF3C7" opacity="0.8"/>
+  
+  <text x="200" y="50" font-family="Arial" font-size="24" font-weight="bold" text-anchor="middle" fill="#1E293B">City Hotel</text>
+  
+  <defs>
+    <linearGradient id="city" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#FCA5A5;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#FDA4AF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#C084FC;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+</svg>
