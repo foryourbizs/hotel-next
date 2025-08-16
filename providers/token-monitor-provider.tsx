@@ -164,16 +164,16 @@ function useTokenMonitor() {
 export function TokenMonitorProvider({ children }: TokenMonitorProviderProps) {
   const tokenMonitor = useTokenMonitor()
 
-  // Provider context에서 토큰 모니터 기능 제공 (필요한 경우)
+  // Provider context에서 토큰 모니터 기능 제공
   const contextValue = React.useMemo(() => ({
     isMonitoring: tokenMonitor.isMonitoring,
     checkTokenStatus: tokenMonitor.checkTokenStatus,
   }), [tokenMonitor.isMonitoring, tokenMonitor.checkTokenStatus])
 
   return (
-    <>
+    <TokenMonitorContext.Provider value={contextValue}>
       {children}
-    </>
+    </TokenMonitorContext.Provider>
   )
 }
 

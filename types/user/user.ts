@@ -11,10 +11,14 @@ import type {
   UserFilter as CrudUserFilter
 } from './crud-user'
 
+// User 역할 타입
+export type UserRole = 'admin' | 'user' | 'editor' | 'moderator';
+
 // 기본 타입 재사용 (필요시 확장 가능)
 export interface User extends CrudUser {
   // 여기에 추가 필드를 정의하세요
   // customField?: string
+  role?: UserRole;
 }
 
 // 생성 요청 타입 확장

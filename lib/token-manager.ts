@@ -1,31 +1,41 @@
 import ky from "ky";
+import CryptoJS from "crypto-js";
 
 import { API_CONFIG, API_ENDPOINTS } from "@/lib/constants";
 import type { AuthResponse } from "@/types/auth";
 
 /**
- * 간단한 토큰 암호화/복호화 (기본 보안)
+ * 강화된 토큰 암호화/복호화
  */
 class TokenCrypto {
-  private static readonly key = "your-app-secret-key-2024"; // production에서는 환경변수로 관리
+  private static readonly key = process.env.NEXT_PUBLIC_ENCRYPTION_KEY || "default-dev-key-2024";
 
   static encrypt(text: string): string {
     try {
-      // 간단한 Base64 인코딩 (실제로는 더 강력한 암호화 사용 권장)
-      const encoded = btoa(encodeURIComponent(text + "|" + Date.now()));
-      return encoded;
-    } catch {
-      return text;
+      // AES 암호화 사용
+      const encrypted = CryptoJS.AES.encrypt(text, TokenCrypto.key).toString();
+      return encrypted;
+    } catch (error) {
+      console.error("Encryption failed:", error);
+      // 암호화 실패 시 폴백으로 Base64 인코딩
+      return btoa(encodeURIComponent(text));
     }
   }
 
   static decrypt(encryptedText: string): string | null {
     try {
-      const decoded = decodeURIComponent(atob(encryptedText));
-      const [text] = decoded.split("|");
-      return text;
-    } catch {
-      return null;
+      // AES 복호화 시도
+      const bytes = CryptoJS.AES.decrypt(encryptedText, TokenCrypto.key);
+      const decrypted = bytes.toString(CryptoJS.enc.Utf8);
+      return decrypted || null;
+    } catch (error) {
+      // AES 복호화 실패 시 Base64 디코딩 시도 (폴백)
+      try {
+        return decodeURIComponent(atob(encryptedText));
+      } catch {
+        console.error("Decryption failed:", error);
+        return null;
+      }
     }
   }
 }

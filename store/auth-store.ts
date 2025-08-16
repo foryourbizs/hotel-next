@@ -5,7 +5,7 @@ import { createJSONStorage, persist } from "zustand/middleware";
 import { tokenManager } from "@/lib/token-manager";
 import type { AuthResponse } from "@/types/auth";
 import type { AuthStore } from "@/types/store";
-import type { User } from "@/types/user/crud-user";
+import type { User } from "@/types/user/user";
 
 /**
  * 인증 상태 관리 스토어
@@ -156,6 +156,9 @@ export const usePermissions = () => {
     // 사용자 본인 데이터 접근 권한 확인
     canEditProfile: (targetUserId?: string) => {
       if (!isAuthenticated || !user) return false;
+
+      // 일반 사용자는 자신의 프로필만 수정 가능
+      return !targetUserId || targetUserId === user.id;
     },
 
     // 소셜 로그인 사용자인지 확인
