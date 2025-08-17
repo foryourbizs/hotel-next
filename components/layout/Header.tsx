@@ -1,8 +1,7 @@
 "use client";
 
 import { SkipLink } from "@/components/ui/Accessibility";
-import { YeogiContainer } from "@/components/ui/Container";
-import { cn } from "@/utils/cn";
+import { ServiceContainer } from "@/components/ui/Container";
 import { AnimatePresence, motion } from "framer-motion";
 import { Menu } from "lucide-react";
 import Link from "next/link";
@@ -10,30 +9,21 @@ import { useState } from "react";
 import { Button } from "../ui/button";
 
 export default function Header() {
-  const [activeTab, setActiveTab] = useState("domestic");
   const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
 
-  const tabs = [
-    { id: "domestic", label: "국내 숙소" },
-    { id: "overseas", label: "해외 숙소" },
-    { id: "package", label: "패키지 여행", hasNew: true },
-  ];
-
   const menuItems = [
-    "국내숙소",
-    "해외숙소",
-    "패키지 여행",
-    "항공",
-    "항공+숙소",
-    "렌터카갓",
-    "펜션카",
-    "공간대여",
-    "",
-    "버킷템 예약조회",
-    "",
-    "이벤트",
-    "",
-    "고객센터",
+    { text: "국내숙소", hasArrow: true },
+    { text: "해외숙소", hasArrow: true },
+    { text: "패키지 여행", hasArrow: true, badge: "new" },
+    { text: "항공", hasArrow: true },
+    { text: "항공+숙소", hasArrow: true },
+    { text: "레저·티켓", hasArrow: true },
+    { text: "렌터카", hasArrow: true },
+    { text: "공간대여", hasArrow: true },
+    { text: "divider", hasArrow: false },
+    { text: "비회원 예약조회", hasArrow: false },
+    { text: "이벤트", hasArrow: false },
+    { text: "고객센터", hasArrow: false },
   ];
 
   return (
@@ -43,7 +33,7 @@ export default function Header() {
         className="fixed top-0 z-50 w-full bg-white shadow-sm"
         role="banner"
       >
-        <YeogiContainer className="px-0">
+        <ServiceContainer className="px-0">
           {/* Top Navigation */}
           <div className="flex items-center justify-between h-[60px] md:h-[72px] px-4 md:px-0">
             {/* Logo */}
@@ -56,13 +46,12 @@ export default function Header() {
 
             {/* Right Menu - 로그인/회원가입과 햄버거 메뉴 */}
             <div className="flex items-center gap-2 relative">
-              <Link href="/login">
+              <Link href="/login" className="hidden md:block">
                 <Button>로그인 / 회원가입</Button>
               </Link>
 
               {/* Hamburger Menu Button */}
               <button
-                className="p-2"
                 onClick={() => setIsSideMenuOpen(!isSideMenuOpen)}
                 aria-label={isSideMenuOpen ? "메뉴 닫기" : "메뉴 열기"}
                 aria-expanded={isSideMenuOpen}
@@ -84,46 +73,95 @@ export default function Header() {
                       onClick={() => setIsSideMenuOpen(false)}
                     />
 
-                    {/* Dropdown Menu */}
+                    {/* Dropdown Menu - Mobile fullscreen, Desktop dropdown */}
                     <motion.div
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
+                      initial={{ opacity: 0, x: "100%" }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: "100%" }}
                       transition={{ duration: 0.2 }}
-                      className="absolute right-0 top-full mt-2 bg-white z-[50] rounded-lg shadow-xl border border-gray-200 w-[240px]"
+                      className="fixed md:absolute top-0 right-0 bottom-0 md:top-full md:bottom-auto md:mt-2 w-full md:w-[320px] bg-white z-[50] md:rounded-lg md:shadow-xl md:border md:border-gray-200"
                     >
-                      <div className="py-2.5">
+                      {/* Mobile close button */}
+                      <div className="md:hidden flex items-center justify-end p-4">
+                        <button
+                          onClick={() => setIsSideMenuOpen(false)}
+                          className="p-2"
+                          aria-label="메뉴 닫기"
+                        >
+                          <svg
+                            className="w-6 h-6"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M6 18L18 6M6 6l12 12"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+
+                      <div className="h-full md:h-auto overflow-y-auto">
+                        {/* Mobile Login/Signup Button */}
+                        <div className="md:hidden px-4 mb-4">
+                          <button className="w-full bg-primary text-white py-3 rounded-lg font-medium text-[16px]">
+                            회원가입 / 로그인
+                          </button>
+                        </div>
+
+                        {/* Main Menu Header */}
+                        <div className="px-4 pb-2">
+                          <span className="text-[12px] text-gray-500">
+                            모든 여행
+                          </span>
+                        </div>
+
                         {/* Menu Items */}
                         <nav>
                           {menuItems.map((item, index) => {
-                            if (item === "") {
+                            if (item.text === "divider") {
                               return (
                                 <div
                                   key={index}
-                                  className="h-px bg-gray-200 my-1"
+                                  className="h-px bg-gray-200 my-2"
                                 />
                               );
                             }
                             return (
                               <button
                                 key={index}
-                                className="block w-full text-left text-[14px] text-gray-700 hover:bg-gray-50 px-4 py-2.5 transition-colors"
+                                className="block w-full text-left text-[16px] md:text-[15px] text-gray-800 hover:bg-gray-50 px-4 py-3 md:py-2.5 transition-colors flex items-center justify-between"
                               >
-                                {item}
+                                <div className="flex items-center">
+                                  <span>{item.text}</span>
+                                  {item.badge === "new" && (
+                                    <span className="ml-2 text-[10px] text-primary font-bold">
+                                      new
+                                    </span>
+                                  )}
+                                </div>
+                                {item.hasArrow && (
+                                  <svg
+                                    className="w-4 h-4 text-gray-400"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth={2}
+                                      d="M9 5l7 7-7 7"
+                                    />
+                                  </svg>
+                                )}
                               </button>
                             );
                           })}
                         </nav>
-
-                        {/* Mobile Only - Login/SignUp */}
-                        <div className="md:hidden border-t border-gray-200 pt-2 mt-2 px-4 pb-2">
-                          <button className="w-full py-2 text-[14px] text-gray-700 text-left">
-                            로그인
-                          </button>
-                          <button className="w-full py-2 text-[14px] text-primary text-left">
-                            회원가입
-                          </button>
-                        </div>
                       </div>
                     </motion.div>
                   </>
@@ -131,44 +169,7 @@ export default function Header() {
               </AnimatePresence>
             </div>
           </div>
-
-          {/* Mobile Tab Navigation */}
-          <div className="md:hidden border-b border-[#ebebeb] overflow-x-auto">
-            <div className="flex min-w-max">
-              {tabs.map((tab) => (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={cn(
-                    "px-6 py-3 text-[14px] font-medium relative whitespace-nowrap transition-colors",
-                    activeTab === tab.id ? "text-primary" : "text-[#616161]"
-                  )}
-                >
-                  <span className="relative">
-                    {tab.label}
-                    {tab.hasNew && (
-                      <span className="absolute -top-1 -right-4 bg-red-500 text-white text-[9px] px-1 rounded">
-                        N
-                      </span>
-                    )}
-                  </span>
-
-                  <AnimatePresence>
-                    {activeTab === tab.id && (
-                      <motion.div
-                        initial={{ scaleX: 0 }}
-                        animate={{ scaleX: 1 }}
-                        exit={{ scaleX: 0 }}
-                        transition={{ duration: 0.2 }}
-                        className="absolute bottom-0 left-0 right-0 h-[2px] bg-primary origin-center"
-                      />
-                    )}
-                  </AnimatePresence>
-                </button>
-              ))}
-            </div>
-          </div>
-        </YeogiContainer>
+        </ServiceContainer>
       </header>
     </>
   );

@@ -66,7 +66,15 @@ const sampleHotels = {
       type: "호텔",
       grade: "5성급",
       badge: "럭셔리",
-      tags: ["시티뷰", "라운지", "미쉐린레스토랑", "수영장", "사우나", "피트니스", "발렛파킹"],
+      tags: [
+        "시티뷰",
+        "라운지",
+        "미쉐린레스토랑",
+        "수영장",
+        "사우나",
+        "피트니스",
+        "발렛파킹",
+      ],
     },
     {
       id: 5,
@@ -93,7 +101,16 @@ const sampleHotels = {
       type: "복합리조트",
       grade: "5성급",
       badge: "럭셔리",
-      tags: ["카지노", "스파", "수영장", "키즈존", "쇼핑몰", "셔틀버스", "무료WiFi", "조식포함"],
+      tags: [
+        "카지노",
+        "스파",
+        "수영장",
+        "키즈존",
+        "쇼핑몰",
+        "셔틀버스",
+        "무료WiFi",
+        "조식포함",
+      ],
     },
     {
       id: 7,
@@ -259,7 +276,7 @@ export default function HotelList({
     <section className="bg-white py-8">
       <div className="max-w-[1200px] mx-auto px-5 md:px-10 ">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-[20px] font-bold">{title}</h2>
+          <h2 className="text-[24px] font-bold">{title}</h2>
           {showMore && (
             <button className="text-sm text-gray-600 flex items-center">
               더보기
@@ -273,7 +290,7 @@ export default function HotelList({
           {/* Custom Navigation Buttons - 영역 밖으로 위치 */}
           <button
             ref={prevRef}
-            className="absolute z-10 bg-white shadow-lg rounded-full border border-gray-300 w-12 h-12 flex items-center justify-center swiper-button-prev-custom"
+            className="absolute z-10 bg-white shadow-lg rounded-full border border-gray-300 w-12 h-12 flex items-center justify-center swiper-button-prev-custom hidden md:flex"
             style={{
               top: "90px",
               left: "-25px",
@@ -286,7 +303,7 @@ export default function HotelList({
 
           <button
             ref={nextRef}
-            className="absolute z-10 bg-white shadow-lg rounded-full border border-gray-300 w-12 h-12 flex items-center justify-center swiper-button-next-custom"
+            className="absolute z-10 bg-white shadow-lg rounded-full border border-gray-300 w-12 h-12 flex items-center justify-center swiper-button-next-custom hidden md:flex"
             style={{
               top: "90px",
               right: "-25px",
@@ -300,39 +317,39 @@ export default function HotelList({
           {/* Swiper는 overflow hidden으로 감싸기 */}
           <div className="overflow-hidden">
             <Swiper
-            modules={[Navigation]}
-            spaceBetween={16}
-            slidesPerView={2}
-            slidesPerGroup={2}
-            navigation={{
-              prevEl: prevRef.current,
-              nextEl: nextRef.current,
-            }}
-            onBeforeInit={(swiper) => {
-              swiperRef.current = swiper;
-            }}
-            onInit={(swiper) => {
-              // @ts-expect-error - Swiper navigation type issue
-              swiper.params.navigation.prevEl = prevRef.current;
-              // @ts-expect-error - Swiper navigation type issue
-              swiper.params.navigation.nextEl = nextRef.current;
-              swiper.navigation.init();
-              swiper.navigation.update();
-            }}
-            breakpoints={{
-              768: {
-                slidesPerView: 4,
-                slidesPerGroup: 4,
-              },
-            }}
-            className="hotel-swiper"
-          >
-            {hotels.map((hotel) => (
-              <SwiperSlide key={hotel.id}>
-                <HotelCard hotel={hotel} />
-              </SwiperSlide>
-            ))}
-          </Swiper>
+              modules={[Navigation]}
+              spaceBetween={16}
+              slidesPerView={2}
+              slidesPerGroup={2}
+              navigation={{
+                prevEl: prevRef.current,
+                nextEl: nextRef.current,
+              }}
+              onBeforeInit={(swiper) => {
+                swiperRef.current = swiper;
+              }}
+              onInit={(swiper) => {
+                // @ts-expect-error - Swiper navigation type issue
+                swiper.params.navigation.prevEl = prevRef.current;
+                // @ts-expect-error - Swiper navigation type issue
+                swiper.params.navigation.nextEl = nextRef.current;
+                swiper.navigation.init();
+                swiper.navigation.update();
+              }}
+              breakpoints={{
+                768: {
+                  slidesPerView: 4,
+                  slidesPerGroup: 4,
+                },
+              }}
+              className="hotel-swiper"
+            >
+              {hotels.map((hotel) => (
+                <SwiperSlide key={hotel.id}>
+                  <HotelCard hotel={hotel} />
+                </SwiperSlide>
+              ))}
+            </Swiper>
           </div>
 
           <style jsx global>{`

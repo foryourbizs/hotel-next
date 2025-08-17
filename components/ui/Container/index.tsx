@@ -45,7 +45,7 @@ export default function Container({
 }
 
 // ServiceName 전용 컨테이너 프리셋
-export function YeogiContainer({
+export function ServiceContainer({
   children,
   className,
 }: {
@@ -82,7 +82,7 @@ export function SectionContainer({
         className
       )}
     >
-      <YeogiContainer>{children}</YeogiContainer>
+      <ServiceContainer>{children}</ServiceContainer>
     </section>
   );
 }
@@ -102,7 +102,7 @@ export function HeroContainer({
         className
       )}
     >
-      <YeogiContainer>{children}</YeogiContainer>
+      <ServiceContainer>{children}</ServiceContainer>
     </div>
   );
 }

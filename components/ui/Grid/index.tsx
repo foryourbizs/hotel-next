@@ -67,7 +67,7 @@ export default function Grid({
 }
 
 // ServiceName 전용 그리드 프리셋
-export function YeogiGrid({
+export function ServiceGrid({
   children,
   className,
 }: {
