@@ -11,8 +11,23 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 
+// 호텔 타입 정의
+type Hotel = {
+  id: number;
+  rank: number;
+  name: string;
+  location: string;
+  price: number;
+  originalPrice: number;
+  discount: number;
+  rating: number;
+  reviewCount: number;
+  image: string;
+  category: string;
+};
+
 // 샘플 데이터 - 카테고리별 호텔
-const hotelsByCategory: Record<string, typeof popularHotels> = {
+const hotelsByCategory: Record<string, Hotel[]> = {
   호텔: [
     {
       id: 1,
@@ -283,13 +298,12 @@ const hotelsByCategory: Record<string, typeof popularHotels> = {
   ],
 };
 
-const popularHotels = hotelsByCategory["호텔"];
 
 const categories = ["호텔", "펜션", "모텔", "게스트하우스"];
 
 export default function PopularHotels() {
   const [selectedCategory, setSelectedCategory] = useState("호텔");
-  const swiperRef = useRef<SwiperType>();
+  const swiperRef = useRef<SwiperType | undefined>(undefined);
   const prevRef = useRef<HTMLButtonElement>(null);
   const nextRef = useRef<HTMLButtonElement>(null);
 
@@ -368,9 +382,9 @@ export default function PopularHotels() {
                 swiperRef.current = swiper;
               }}
               onInit={(swiper) => {
-                // @ts-ignore
+                // @ts-expect-error - Swiper navigation type issue
                 swiper.params.navigation.prevEl = prevRef.current;
-                // @ts-ignore
+                // @ts-expect-error - Swiper navigation type issue
                 swiper.params.navigation.nextEl = nextRef.current;
                 swiper.navigation.init();
                 swiper.navigation.update();

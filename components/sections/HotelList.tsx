@@ -251,7 +251,7 @@ export default function HotelList({
   showMore = false,
 }: HotelListProps) {
   const hotels = sampleHotels[category];
-  const swiperRef = useRef<SwiperType>();
+  const swiperRef = useRef<SwiperType | undefined>(undefined);
   const prevRef = useRef<HTMLButtonElement>(null);
   const nextRef = useRef<HTMLButtonElement>(null);
 
@@ -312,9 +312,9 @@ export default function HotelList({
               swiperRef.current = swiper;
             }}
             onInit={(swiper) => {
-              // @ts-ignore
+              // @ts-expect-error - Swiper navigation type issue
               swiper.params.navigation.prevEl = prevRef.current;
-              // @ts-ignore
+              // @ts-expect-error - Swiper navigation type issue
               swiper.params.navigation.nextEl = nextRef.current;
               swiper.navigation.init();
               swiper.navigation.update();

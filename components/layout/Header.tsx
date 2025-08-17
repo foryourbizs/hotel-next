@@ -11,7 +11,6 @@ import { Button } from "../ui/button";
 
 export default function Header() {
   const [activeTab, setActiveTab] = useState("domestic");
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
 
   const tabs = [

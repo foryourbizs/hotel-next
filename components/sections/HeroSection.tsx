@@ -14,7 +14,6 @@ export default function HeroSection() {
   const [searchQuery, setSearchQuery] = useState("");
   const [checkIn, setCheckIn] = useState<Date | null>(null);
   const [checkOut, setCheckOut] = useState<Date | null>(null);
-  const [guests, setGuests] = useState("2명");
   const [searchStatus, setSearchStatus] = useState("");
   const [showSearchModal, setShowSearchModal] = useState(false);
   const [showDateModal, setShowDateModal] = useState(false);
@@ -83,18 +82,6 @@ export default function HeroSection() {
     return new Date(date.getFullYear(), date.getMonth(), 1).getDay();
   };
 
-  const isDateInRange = (date: Date) => {
-    if (!checkIn || !checkOut) return false;
-    return date > checkIn && date < checkOut;
-  };
-
-  const isDateSelected = (date: Date) => {
-    if (!checkIn && !checkOut) return false;
-    return (
-      (checkIn && date.getTime() === checkIn.getTime()) ||
-      (checkOut && date.getTime() === checkOut.getTime())
-    );
-  };
 
   const isRangeStart = (date: Date) => {
     return checkIn && date.getTime() === checkIn.getTime();
@@ -193,7 +180,7 @@ export default function HeroSection() {
 
       let buttonClassName =
         "w-10 h-10 flex items-center justify-center cursor-pointer text-sm relative";
-      let wrapperClassName = "relative w-10 h-10";
+      const wrapperClassName = "relative w-10 h-10";
 
       // Button text color
       if (isDisabled) {

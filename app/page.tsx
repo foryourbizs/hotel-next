@@ -14,8 +14,8 @@ export default function HomePage() {
         <HeroSection />
         <QuickMenu />
         <EventBanner />
-        <PopularHotels />
         <HotelList category="recommended" />
+        <PopularHotels />
       </main>
       <Footer />
     </div>

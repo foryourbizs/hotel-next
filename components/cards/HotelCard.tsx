@@ -21,12 +21,6 @@ interface HotelCardProps {
 }
 
 export default function HotelCard({ hotel }: HotelCardProps) {
-  // 가격이 "다른 날짜 확인" 같은 문자열일 수 있음
-  const priceDisplay =
-    typeof hotel.price === "number"
-      ? `${hotel.price.toLocaleString()}원`
-      : hotel.price;
-
   return (
     <div className="bg-white overflow-hidden cursor-pointer">
       {/* Image Container */}
