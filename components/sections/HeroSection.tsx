@@ -272,7 +272,7 @@ export default function HeroSection() {
     return (
       <div>
         <div className="flex items-center justify-between mb-4">
-          {monthOffset === 0 && (
+          {monthOffset === 0 ? (
             <button
               className="p-2 hover:bg-gray-100 rounded"
               onClick={() => handleMonthChange("prev")}
@@ -291,14 +291,15 @@ export default function HeroSection() {
                 />
               </svg>
             </button>
+          ) : (
+            <div className="w-9"></div>
           )}
-          {monthOffset === 0 && <div className="w-9"></div>}
 
           <h3 className="text-lg font-bold">
             {year}년 {monthNames[month]}
           </h3>
 
-          {monthOffset === 1 && (
+          {monthOffset === 1 ? (
             <button
               className="p-2 hover:bg-gray-100 rounded"
               onClick={() => handleMonthChange("next")}
@@ -317,8 +318,9 @@ export default function HeroSection() {
                 />
               </svg>
             </button>
+          ) : (
+            <div className="w-9"></div>
           )}
-          {monthOffset === 1 && <div className="w-9"></div>}
         </div>
         <div className="grid grid-cols-7 gap-1 text-center text-sm text-gray-500 mb-2">
           <div>일</div>
