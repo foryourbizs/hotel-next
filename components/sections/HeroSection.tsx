@@ -12,14 +12,16 @@ import { useRef, useState } from "react";
 
 export default function HeroSection() {
   const [searchQuery, setSearchQuery] = useState("");
-  const [checkIn, setCheckIn] = useState("");
-  const [checkOut, setCheckOut] = useState("");
+  const [checkIn, setCheckIn] = useState<Date | null>(null);
+  const [checkOut, setCheckOut] = useState<Date | null>(null);
   const [guests, setGuests] = useState("2명");
   const [searchStatus, setSearchStatus] = useState("");
   const [showSearchModal, setShowSearchModal] = useState(false);
   const [showDateModal, setShowDateModal] = useState(false);
   const [showGuestModal, setShowGuestModal] = useState(false);
   const [guestCount, setGuestCount] = useState(2);
+  const [currentMonth, setCurrentMonth] = useState(new Date(2025, 7)); // August 2025
+  const [selectingCheckIn, setSelectingCheckIn] = useState(true);
 
   const recentSearches = ["리츠 모텔", "신림역"];
   const popularSearches = [
@@ -37,6 +39,301 @@ export default function HeroSection() {
   const heroRef = useRef<HTMLElement>(null);
   // useIntersectionObserver(heroRef, { threshold: 0.3 });
 
+  // Helper functions for calendar
+  const formatDate = (date: Date | null) => {
+    if (!date) return "";
+    const months = [
+      "01",
+      "02",
+      "03",
+      "04",
+      "05",
+      "06",
+      "07",
+      "08",
+      "09",
+      "10",
+      "11",
+      "12",
+    ];
+    const days = ["일", "월", "화", "수", "목", "금", "토"];
+    const month = months[date.getMonth()];
+    const day = date.getDate().toString().padStart(2, "0");
+    const dayName = days[date.getDay()];
+    return `${month}.${day} ${dayName}`;
+  };
+
+  const formatDateRange = () => {
+    if (!checkIn && !checkOut) return "";
+    if (checkIn && !checkOut) return `${formatDate(checkIn)} - 체크아웃 선택`;
+    if (checkIn && checkOut) {
+      const nights = Math.ceil(
+        (checkOut.getTime() - checkIn.getTime()) / (1000 * 60 * 60 * 24)
+      );
+      return `${formatDate(checkIn)} - ${formatDate(checkOut)} (${nights}박)`;
+    }
+    return "";
+  };
+
+  const getDaysInMonth = (date: Date) => {
+    return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+  };
+
+  const getFirstDayOfMonth = (date: Date) => {
+    return new Date(date.getFullYear(), date.getMonth(), 1).getDay();
+  };
+
+  const isDateInRange = (date: Date) => {
+    if (!checkIn || !checkOut) return false;
+    return date > checkIn && date < checkOut;
+  };
+
+  const isDateSelected = (date: Date) => {
+    if (!checkIn && !checkOut) return false;
+    return (
+      (checkIn && date.getTime() === checkIn.getTime()) ||
+      (checkOut && date.getTime() === checkOut.getTime())
+    );
+  };
+
+  const isRangeStart = (date: Date) => {
+    return checkIn && date.getTime() === checkIn.getTime();
+  };
+
+  const isRangeEnd = (date: Date) => {
+    return checkOut && date.getTime() === checkOut.getTime();
+  };
+
+  const isRangeMiddle = (date: Date) => {
+    if (!checkIn || !checkOut) return false;
+    return date > checkIn && date < checkOut;
+  };
+
+  const isDateDisabled = (date: Date) => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return date < today;
+  };
+
+  const handleDateClick = (date: Date) => {
+    if (isDateDisabled(date)) return;
+
+    if (selectingCheckIn || !checkIn) {
+      setCheckIn(date);
+      setCheckOut(null);
+      setSelectingCheckIn(false);
+    } else {
+      if (date < checkIn) {
+        setCheckIn(date);
+        setCheckOut(null);
+        setSelectingCheckIn(false);
+      } else {
+        setCheckOut(date);
+        setSelectingCheckIn(true);
+      }
+    }
+  };
+
+  const handleMonthChange = (direction: "prev" | "next") => {
+    setCurrentMonth((prev) => {
+      const newMonth = new Date(prev);
+      if (direction === "prev") {
+        newMonth.setMonth(prev.getMonth() - 1);
+      } else {
+        newMonth.setMonth(prev.getMonth() + 1);
+      }
+      return newMonth;
+    });
+  };
+
+  const renderCalendar = (monthOffset: number = 0) => {
+    const displayMonth = new Date(currentMonth);
+    displayMonth.setMonth(currentMonth.getMonth() + monthOffset);
+
+    const year = displayMonth.getFullYear();
+    const month = displayMonth.getMonth();
+    const daysInMonth = getDaysInMonth(displayMonth);
+    const firstDay = getFirstDayOfMonth(displayMonth);
+
+    const monthNames = [
+      "1월",
+      "2월",
+      "3월",
+      "4월",
+      "5월",
+      "6월",
+      "7월",
+      "8월",
+      "9월",
+      "10월",
+      "11월",
+      "12월",
+    ];
+
+    const days = [];
+
+    // Add empty cells for days before the first day of the month
+    for (let i = 0; i < firstDay; i++) {
+      days.push(<div key={`empty-${i}`} className="w-10 h-10"></div>);
+    }
+
+    // Add days of the month
+    for (let day = 1; day <= daysInMonth; day++) {
+      const date = new Date(year, month, day);
+      const isDisabled = isDateDisabled(date);
+      const isStart = isRangeStart(date);
+      const isEnd = isRangeEnd(date);
+      const isMiddle = isRangeMiddle(date);
+      const isToday = date.toDateString() === new Date().toDateString();
+      const isWeekend = date.getDay() === 0 || date.getDay() === 6;
+
+      let buttonClassName =
+        "w-10 h-10 flex items-center justify-center cursor-pointer text-sm relative";
+      let wrapperClassName = "relative w-10 h-10";
+
+      // Button text color
+      if (isDisabled) {
+        buttonClassName += " text-gray-300 cursor-not-allowed";
+      } else if (isStart || isEnd) {
+        buttonClassName += " text-white font-bold z-20";
+      } else if (isMiddle) {
+        buttonClassName += " text-[#1D8BFF] font-medium";
+      } else if (isWeekend) {
+        buttonClassName += " text-red-500 hover:bg-gray-100 hover:rounded-full";
+      } else {
+        buttonClassName +=
+          " text-gray-700 hover:bg-gray-100 hover:rounded-full";
+      }
+
+      days.push(
+        <div key={day} className={wrapperClassName}>
+          {/* Range background - only show when both dates are selected */}
+          {checkIn && checkOut && (isStart || isMiddle || isEnd) && (
+            <div className="absolute inset-0 pointer-events-none">
+              {isStart && !isEnd && (
+                <div
+                  className="absolute top-0 h-10 bg-[#E3F2FD] rounded-l-full"
+                  style={{
+                    left: "0",
+                    right: "-50%",
+                    width: "calc(100% + 20px)",
+                  }}
+                ></div>
+              )}
+              {isEnd && !isStart && (
+                <div
+                  className="absolute top-0 h-10 bg-[#E3F2FD] rounded-r-full"
+                  style={{
+                    left: "-50%",
+                    right: "0",
+                    width: "calc(100% + 20px)",
+                  }}
+                ></div>
+              )}
+              {isMiddle && (
+                <div
+                  className="absolute top-0 h-10 bg-[#E3F2FD]"
+                  style={{
+                    left: "-50%",
+                    right: "-50%",
+                    width: "calc(100% + 40px)",
+                  }}
+                ></div>
+              )}
+              {(isStart || isEnd) && (
+                <div className="absolute top-0 left-0 w-10 h-10 bg-[#1D8BFF] rounded-full z-10"></div>
+              )}
+            </div>
+          )}
+
+          {/* Single date selection - only check-in selected */}
+          {checkIn && !checkOut && isStart && (
+            <div className="absolute inset-0 pointer-events-none">
+              <div className="absolute top-0 left-0 w-10 h-10 bg-[#1D8BFF] rounded-full z-10"></div>
+            </div>
+          )}
+
+          {/* Button */}
+          <button
+            className={buttonClassName}
+            onClick={() => handleDateClick(date)}
+            disabled={isDisabled}
+            style={{ position: "relative", zIndex: 20 }}
+          >
+            {day}
+            {isToday && !isStart && !isEnd && (
+              <div className="absolute bottom-1 w-1 h-1 bg-[#1D8BFF] rounded-full"></div>
+            )}
+          </button>
+        </div>
+      );
+    }
+
+    return (
+      <div>
+        <div className="flex items-center justify-between mb-4">
+          {monthOffset === 0 && (
+            <button
+              className="p-2 hover:bg-gray-100 rounded"
+              onClick={() => handleMonthChange("prev")}
+            >
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+            </button>
+          )}
+          {monthOffset === 0 && <div className="w-9"></div>}
+
+          <h3 className="text-lg font-bold">
+            {year}년 {monthNames[month]}
+          </h3>
+
+          {monthOffset === 1 && (
+            <button
+              className="p-2 hover:bg-gray-100 rounded"
+              onClick={() => handleMonthChange("next")}
+            >
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </button>
+          )}
+          {monthOffset === 1 && <div className="w-9"></div>}
+        </div>
+        <div className="grid grid-cols-7 gap-1 text-center text-sm text-gray-500 mb-2">
+          <div>일</div>
+          <div>월</div>
+          <div>화</div>
+          <div>수</div>
+          <div>목</div>
+          <div>금</div>
+          <div>토</div>
+        </div>
+        <div className="grid grid-cols-7">{days}</div>
+      </div>
+    );
+  };
+
   const handleSearch = () => {
     if (!searchQuery.trim()) {
       setSearchStatus("지역이나 숙소명을 입력해주세요.");
@@ -48,7 +345,12 @@ export default function HeroSection() {
     }
 
     setSearchStatus("검색 중...");
-    console.log("검색:", { searchQuery, checkIn, checkOut, guests });
+    console.log("검색:", {
+      searchQuery,
+      checkIn: formatDate(checkIn),
+      checkOut: formatDate(checkOut),
+      guests: guestCount,
+    });
 
     // 실제 검색 로직이 여기 들어갈 예정
     setTimeout(() => {
@@ -140,7 +442,7 @@ export default function HeroSection() {
 
                       {/* Search Dropdown */}
                       {showSearchModal && (
-                        <div 
+                        <div
                           className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-xl border border-gray-200 z-50"
                           onMouseDown={(e) => e.preventDefault()}
                         >
@@ -245,9 +547,7 @@ export default function HeroSection() {
                       <input
                         type="text"
                         placeholder="08.16 토 - 08.17 일 (1박)"
-                        value={
-                          checkIn && checkOut ? `${checkIn} - ${checkOut}` : ""
-                        }
+                        value={formatDateRange()}
                         onFocus={() => setShowDateModal(true)}
                         onBlur={() => setShowDateModal(false)}
                         className="w-full h-14 pl-12 pr-4 bg-gray-50 rounded-lg text-[15px] placeholder-gray-700 focus:outline-none focus:ring-2 focus:ring-[#1D8BFF] cursor-pointer"
@@ -258,290 +558,15 @@ export default function HeroSection() {
 
                       {/* Date Dropdown */}
                       {showDateModal && (
-                        <div 
+                        <div
                           className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-xl border border-gray-200 z-50 w-[600px]"
                           onMouseDown={(e) => e.preventDefault()}
                         >
                           <div className="p-6">
                             {/* Calendar */}
                             <div className="grid grid-cols-2 gap-8">
-                              {/* August 2025 */}
-                              <div>
-                                <div className="flex items-center justify-between mb-4">
-                                  <button className="p-2">
-                                    <svg
-                                      className="w-5 h-5"
-                                      fill="none"
-                                      viewBox="0 0 24 24"
-                                      stroke="currentColor"
-                                    >
-                                      <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        d="M15 19l-7-7 7-7"
-                                      />
-                                    </svg>
-                                  </button>
-                                  <h3 className="text-lg font-bold">
-                                    2025년 8월
-                                  </h3>
-                                  <div className="w-9"></div>
-                                </div>
-                                <div className="grid grid-cols-7 gap-1 text-center text-sm text-gray-500 mb-2">
-                                  <div>일</div>
-                                  <div>월</div>
-                                  <div>화</div>
-                                  <div>수</div>
-                                  <div>목</div>
-                                  <div>금</div>
-                                  <div>토</div>
-                                </div>
-                                <div className="grid grid-cols-7 gap-1">
-                                  <div className="h-10 flex items-center justify-center text-gray-300">
-                                    1
-                                  </div>
-                                  <div className="h-10 flex items-center justify-center text-gray-500">
-                                    2
-                                  </div>
-                                  <div className="h-10 flex items-center justify-center text-gray-500">
-                                    3
-                                  </div>
-                                  <div className="h-10 flex items-center justify-center text-gray-500">
-                                    4
-                                  </div>
-                                  <div className="h-10 flex items-center justify-center text-gray-500">
-                                    5
-                                  </div>
-                                  <div className="h-10 flex items-center justify-center text-gray-500">
-                                    6
-                                  </div>
-                                  <div className="h-10 flex items-center justify-center text-gray-500">
-                                    7
-                                  </div>
-                                  <div className="h-10 flex items-center justify-center text-gray-500">
-                                    8
-                                  </div>
-                                  <div className="h-10 flex items-center justify-center text-gray-500">
-                                    9
-                                  </div>
-                                  <div className="h-10 flex items-center justify-center text-gray-500">
-                                    10
-                                  </div>
-                                  <div className="h-10 flex items-center justify-center text-gray-500">
-                                    11
-                                  </div>
-                                  <div className="h-10 flex items-center justify-center text-gray-500">
-                                    12
-                                  </div>
-                                  <div className="h-10 flex items-center justify-center text-gray-500">
-                                    13
-                                  </div>
-                                  <div className="h-10 flex items-center justify-center text-gray-500">
-                                    14
-                                  </div>
-                                  <div className="h-10 flex items-center justify-center text-gray-500">
-                                    15
-                                  </div>
-                                  <div className="h-10 flex items-center justify-center bg-[#1D8BFF] text-white rounded-full font-bold">
-                                    16
-                                  </div>
-                                  <div className="h-10 flex items-center justify-center bg-[#1D8BFF] text-white rounded-full font-bold">
-                                    17
-                                  </div>
-                                  <div className="h-10 flex items-center justify-center text-gray-500">
-                                    18
-                                  </div>
-                                  <div className="h-10 flex items-center justify-center text-gray-500">
-                                    19
-                                  </div>
-                                  <div className="h-10 flex items-center justify-center text-gray-500">
-                                    20
-                                  </div>
-                                  <div className="h-10 flex items-center justify-center text-gray-500">
-                                    21
-                                  </div>
-                                  <div className="h-10 flex items-center justify-center text-gray-500">
-                                    22
-                                  </div>
-                                  <div className="h-10 flex items-center justify-center text-gray-500">
-                                    23
-                                  </div>
-                                  <div className="h-10 flex items-center justify-center text-red-500">
-                                    24
-                                  </div>
-                                  <div className="h-10 flex items-center justify-center text-gray-500">
-                                    25
-                                  </div>
-                                  <div className="h-10 flex items-center justify-center text-gray-500">
-                                    26
-                                  </div>
-                                  <div className="h-10 flex items-center justify-center text-gray-500">
-                                    27
-                                  </div>
-                                  <div className="h-10 flex items-center justify-center text-gray-500">
-                                    28
-                                  </div>
-                                  <div className="h-10 flex items-center justify-center text-gray-500">
-                                    29
-                                  </div>
-                                  <div className="h-10 flex items-center justify-center text-gray-500">
-                                    30
-                                  </div>
-                                  <div className="h-10 flex items-center justify-center text-red-500">
-                                    31
-                                  </div>
-                                </div>
-                              </div>
-
-                              {/* September 2025 */}
-                              <div>
-                                <div className="flex items-center justify-between mb-4">
-                                  <div className="w-9"></div>
-                                  <h3 className="text-lg font-bold">
-                                    2025년 9월
-                                  </h3>
-                                  <button className="p-2">
-                                    <svg
-                                      className="w-5 h-5"
-                                      fill="none"
-                                      viewBox="0 0 24 24"
-                                      stroke="currentColor"
-                                    >
-                                      <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        d="M9 5l7 7-7 7"
-                                      />
-                                    </svg>
-                                  </button>
-                                </div>
-                                <div className="grid grid-cols-7 gap-1 text-center text-sm text-gray-500 mb-2">
-                                  <div>일</div>
-                                  <div>월</div>
-                                  <div>화</div>
-                                  <div>수</div>
-                                  <div>목</div>
-                                  <div>금</div>
-                                  <div>토</div>
-                                </div>
-                                <div className="grid grid-cols-7 gap-1">
-                                  <div className="h-10 flex items-center justify-center text-gray-500">
-                                    1
-                                  </div>
-                                  <div className="h-10 flex items-center justify-center text-gray-500">
-                                    2
-                                  </div>
-                                  <div className="h-10 flex items-center justify-center text-gray-500">
-                                    3
-                                  </div>
-                                  <div className="h-10 flex items-center justify-center text-gray-500">
-                                    4
-                                  </div>
-                                  <div className="h-10 flex items-center justify-center text-gray-500">
-                                    5
-                                  </div>
-                                  <div className="h-10 flex items-center justify-center text-gray-500">
-                                    6
-                                  </div>
-                                  <div className="h-10 flex items-center justify-center text-red-500">
-                                    7
-                                  </div>
-                                  <div className="h-10 flex items-center justify-center text-gray-500">
-                                    8
-                                  </div>
-                                  <div className="h-10 flex items-center justify-center text-gray-500">
-                                    9
-                                  </div>
-                                  <div className="h-10 flex items-center justify-center text-gray-500">
-                                    10
-                                  </div>
-                                  <div className="h-10 flex items-center justify-center text-gray-500">
-                                    11
-                                  </div>
-                                  <div className="h-10 flex items-center justify-center text-gray-500">
-                                    12
-                                  </div>
-                                  <div className="h-10 flex items-center justify-center text-gray-500">
-                                    13
-                                  </div>
-                                  <div className="h-10 flex items-center justify-center text-red-500">
-                                    14
-                                  </div>
-                                  <div className="h-10 flex items-center justify-center text-gray-500">
-                                    15
-                                  </div>
-                                  <div className="h-10 flex items-center justify-center text-gray-500">
-                                    16
-                                  </div>
-                                  <div className="h-10 flex items-center justify-center text-gray-500">
-                                    17
-                                  </div>
-                                  <div className="h-10 flex items-center justify-center text-gray-500">
-                                    18
-                                  </div>
-                                  <div className="h-10 flex items-center justify-center text-gray-500">
-                                    19
-                                  </div>
-                                  <div className="h-10 flex items-center justify-center text-gray-500">
-                                    20
-                                  </div>
-                                  <div className="h-10 flex items-center justify-center text-red-500">
-                                    21
-                                  </div>
-                                  <div className="h-10 flex items-center justify-center text-gray-500">
-                                    22
-                                  </div>
-                                  <div className="h-10 flex items-center justify-center text-gray-500">
-                                    23
-                                  </div>
-                                  <div className="h-10 flex items-center justify-center text-gray-500">
-                                    24
-                                  </div>
-                                  <div className="h-10 flex items-center justify-center text-gray-500">
-                                    25
-                                  </div>
-                                  <div className="h-10 flex items-center justify-center text-gray-500">
-                                    26
-                                  </div>
-                                  <div className="h-10 flex items-center justify-center text-gray-500">
-                                    27
-                                  </div>
-                                  <div className="h-10 flex items-center justify-center text-red-500">
-                                    28
-                                  </div>
-                                  <div className="h-10 flex items-center justify-center text-gray-500">
-                                    29
-                                  </div>
-                                  <div className="h-10 flex items-center justify-center text-gray-500">
-                                    30
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-
-                            {/* Bottom Info */}
-                            <div className="mt-6 text-center">
-                              <div className="flex items-center justify-center gap-2 text-sm text-gray-500 mb-4">
-                                <svg
-                                  className="w-4 h-4"
-                                  fill="none"
-                                  viewBox="0 0 24 24"
-                                  stroke="currentColor"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-                                  />
-                                </svg>
-                                <span>일정 초기화</span>
-                              </div>
-                              <div className="text-lg font-bold text-gray-900">
-                                08.16 토 - 08.17 일 (1박)
-                              </div>
+                              {renderCalendar(0)}
+                              {renderCalendar(1)}
                             </div>
                           </div>
                         </div>
@@ -578,7 +603,7 @@ export default function HeroSection() {
 
                       {/* Guest Dropdown */}
                       {showGuestModal && (
-                        <div 
+                        <div
                           className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-xl border border-gray-200 z-50 w-[280px]"
                           onMouseDown={(e) => e.preventDefault()}
                         >
