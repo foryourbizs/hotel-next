@@ -1,21 +1,40 @@
 "use client";
 
-import { AccessibleButton, SkipLink } from "@/components/ui/Accessibility";
+import { SkipLink } from "@/components/ui/Accessibility";
 import { YeogiContainer } from "@/components/ui/Container";
 import { cn } from "@/utils/cn";
 import { AnimatePresence, motion } from "framer-motion";
-import Image from "next/image";
+import { Menu } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import { Button } from "../ui/button";
 
 export default function Header() {
   const [activeTab, setActiveTab] = useState("domestic");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
 
   const tabs = [
     { id: "domestic", label: "국내 숙소" },
     { id: "overseas", label: "해외 숙소" },
     { id: "package", label: "패키지 여행", hasNew: true },
+  ];
+
+  const menuItems = [
+    "국내숙소",
+    "해외숙소",
+    "패키지 여행",
+    "항공",
+    "항공+숙소",
+    "렌터카갓",
+    "펜션카",
+    "공간대여",
+    "",
+    "버킷템 예약조회",
+    "",
+    "이벤트",
+    "",
+    "고객센터",
   ];
 
   return (
@@ -29,52 +48,89 @@ export default function Header() {
           {/* Top Navigation */}
           <div className="flex items-center justify-between h-[60px] md:h-[72px] px-4 md:px-0">
             {/* Logo */}
-            <Link href="/" className="flex items-center">
-              <Image
-                src="/images/yeogi-logo.svg"
-                alt="ServiceName"
-                width={120}
-                height={36}
-                className="h-[28px] md:h-[36px] w-auto"
-                priority
-              />
+            <Link
+              href="/"
+              className="flex items-center text-2xl font-bold text-[#1D8BFF]"
+            >
+              ServiceName
             </Link>
 
-            {/* Desktop Right Menu */}
-            <div className="hidden md:flex items-center space-x-4">
-              <button className="text-[14px] text-[#616161] hover:text-black transition-colors">
-                내주변 예약
-              </button>
-              <button className="text-[14px] text-[#616161] hover:text-black transition-colors">
-                로그인
-              </button>
-            </div>
+            {/* Right Menu - 로그인/회원가입과 햄버거 메뉴 */}
+            <div className="flex items-center gap-2 relative">
+              <Link href="/login">
+                <Button>로그인 / 회원가입</Button>
+              </Link>
 
-            {/* Mobile Menu Button */}
-            <AccessibleButton
-              variant="ghost"
-              className="md:hidden p-2"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              aria-label={isMobileMenuOpen ? "메뉴 닫기" : "메뉴 열기"}
-              aria-expanded={isMobileMenuOpen}
-              aria-controls="mobile-menu"
-            >
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                aria-hidden="true"
+              {/* Hamburger Menu Button */}
+              <button
+                className="p-2"
+                onClick={() => setIsSideMenuOpen(!isSideMenuOpen)}
+                aria-label={isSideMenuOpen ? "메뉴 닫기" : "메뉴 열기"}
+                aria-expanded={isSideMenuOpen}
               >
-                <path
-                  d="M3 12h18M3 6h18M3 18h18"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </AccessibleButton>
+                <Menu className="w-6 h-6" />
+              </button>
+
+              {/* Dropdown Menu */}
+              <AnimatePresence>
+                {isSideMenuOpen && (
+                  <>
+                    {/* Backdrop */}
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                      className="fixed inset-0 z-[45]"
+                      onClick={() => setIsSideMenuOpen(false)}
+                    />
+
+                    {/* Dropdown Menu */}
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.2 }}
+                      className="absolute right-0 top-full mt-2 bg-white z-[50] rounded-lg shadow-xl border border-gray-200 w-[240px]"
+                    >
+                      <div className="py-2.5">
+                        {/* Menu Items */}
+                        <nav>
+                          {menuItems.map((item, index) => {
+                            if (item === "") {
+                              return (
+                                <div
+                                  key={index}
+                                  className="h-px bg-gray-200 my-1"
+                                />
+                              );
+                            }
+                            return (
+                              <button
+                                key={index}
+                                className="block w-full text-left text-[14px] text-gray-700 hover:bg-gray-50 px-4 py-2.5 transition-colors"
+                              >
+                                {item}
+                              </button>
+                            );
+                          })}
+                        </nav>
+
+                        {/* Mobile Only - Login/SignUp */}
+                        <div className="md:hidden border-t border-gray-200 pt-2 mt-2 px-4 pb-2">
+                          <button className="w-full py-2 text-[14px] text-gray-700 text-left">
+                            로그인
+                          </button>
+                          <button className="w-full py-2 text-[14px] text-[#1D8BFF] text-left">
+                            회원가입
+                          </button>
+                        </div>
+                      </div>
+                    </motion.div>
+                  </>
+                )}
+              </AnimatePresence>
+            </div>
           </div>
 
           {/* Mobile Tab Navigation */}
@@ -114,28 +170,6 @@ export default function Header() {
             </div>
           </div>
         </YeogiContainer>
-
-        {/* Mobile Menu Dropdown */}
-        <AnimatePresence>
-          {isMobileMenuOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3 }}
-              className="md:hidden bg-white border-t border-[#ebebeb] shadow-lg"
-            >
-              <div className="px-4 py-3 space-y-3">
-                <button className="block w-full text-left text-[14px] text-[#616161] py-2">
-                  내주변 예약
-                </button>
-                <button className="block w-full text-left text-[14px] text-[#616161] py-2">
-                  로그인
-                </button>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </header>
     </>
   );

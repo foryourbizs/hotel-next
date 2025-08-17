@@ -1,64 +1,125 @@
 "use client";
 
 import HotelCard from "@/components/cards/HotelCard";
-import { ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useRef } from "react";
+import type { Swiper as SwiperType } from "swiper";
+import { Navigation } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
+
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/navigation";
 
 // 샘플 데이터 - Lorem Picsum을 사용한 이미지
 const sampleHotels = {
   recommended: [
     {
       id: 1,
-      name: "그랜드 하얏트 서울",
-      location: "서울 용산구",
-      rating: 4.8,
-      reviewCount: 1234,
+      name: "세인트존스 호텔",
+      location: "강릉시 · 강릉 강문해변 앞",
+      rating: 9.1,
+      reviewCount: 9765,
       price: 250000,
       originalPrice: 350000,
       discount: 30,
       image: "https://picsum.photos/400/300?random=hotel1",
-      type: "호텔",
-      grade: "5성급",
+      type: "블랙",
+      grade: "특급",
       badge: "베스트",
       tags: ["무료WiFi", "주차가능"],
     },
     {
       id: 2,
-      name: "롯데호텔 제주",
-      location: "제주 서귀포시",
-      rating: 4.7,
-      reviewCount: 892,
+      name: "인스파이어 엔터테인먼트 리조트",
+      location: "중구 · 영종도 IBC-1",
+      rating: 9.5,
+      reviewCount: 1338,
       price: 180000,
       originalPrice: 220000,
       discount: 20,
       image: "https://picsum.photos/400/300?random=hotel2",
-      type: "호텔",
+      type: "블랙",
       grade: "5성급",
       tags: ["오션뷰", "풀"],
     },
     {
       id: 3,
-      name: "부산 파크 하얏트",
-      location: "부산 해운대구",
-      rating: 4.9,
-      reviewCount: 567,
-      price: 280000,
+      name: "★당일특가★ 제스터톤스 호텔",
+      location: "속초시 · 속초터미널 차량 11분",
+      rating: 9.1,
+      reviewCount: 3039,
+      price: 525000,
       image: "https://picsum.photos/400/300?random=hotel3",
-      type: "호텔",
-      grade: "5성급",
+      type: "가족호텔",
+      grade: "호텔",
       tags: ["해변", "스파"],
     },
     {
       id: 4,
       name: "시그니엘 서울",
-      location: "서울 송파구",
-      rating: 4.9,
+      location: "서울 송파구 · 잠실역 도보 5분",
+      rating: 9.8,
       reviewCount: 2341,
-      price: 450000,
+      price: "다른 날짜 확인",
       image: "https://picsum.photos/400/300?random=hotel4",
       type: "호텔",
       grade: "5성급",
       badge: "럭셔리",
       tags: ["시티뷰", "라운지"],
+    },
+    {
+      id: 5,
+      name: "그랜드 워커힐 서울",
+      location: "광진구 · 아차산역 10분",
+      rating: 8.9,
+      reviewCount: 5432,
+      price: 280000,
+      originalPrice: 350000,
+      discount: 20,
+      image: "https://picsum.photos/400/300?random=hotel5",
+      type: "호텔",
+      grade: "5성급",
+      tags: ["리버뷰", "카지노"],
+    },
+    {
+      id: 6,
+      name: "파라다이스시티",
+      location: "중구 · 인천공항 인근",
+      rating: 9.3,
+      reviewCount: 3876,
+      price: 450000,
+      image: "https://picsum.photos/400/300?random=hotel6",
+      type: "복합리조트",
+      grade: "5성급",
+      badge: "럭셔리",
+      tags: ["카지노", "스파"],
+    },
+    {
+      id: 7,
+      name: "롯데호텔 월드",
+      location: "송파구 · 잠실역 직결",
+      rating: 9.0,
+      reviewCount: 6789,
+      price: 320000,
+      originalPrice: 400000,
+      discount: 20,
+      image: "https://picsum.photos/400/300?random=hotel7",
+      type: "호텔",
+      grade: "5성급",
+      tags: ["테마파크", "쇼핑"],
+    },
+    {
+      id: 8,
+      name: "힐튼 부산",
+      location: "기장군 · 해운대 근처",
+      rating: 8.8,
+      reviewCount: 2345,
+      price: 220000,
+      image: "https://picsum.photos/400/300?random=hotel8",
+      type: "호텔",
+      grade: "5성급",
+      tags: ["오션뷰", "야외수영장"],
     },
   ],
   special: [
@@ -179,42 +240,108 @@ const sampleHotels = {
 };
 
 interface HotelListProps {
-  title: string;
+  title?: string;
   category: "recommended" | "special" | "new";
   showMore?: boolean;
 }
 
-export default function HotelList({ title, category, showMore = true }: HotelListProps) {
+export default function HotelList({
+  title = "추천 숙소",
+  category,
+  showMore = false,
+}: HotelListProps) {
   const hotels = sampleHotels[category];
-
-  if (!title) {
-    // When used as inline grid items
-    return (
-      <>
-        {hotels.map((hotel) => (
-          <HotelCard key={hotel.id} hotel={hotel} />
-        ))}
-      </>
-    );
-  }
+  const swiperRef = useRef<SwiperType>();
+  const prevRef = useRef<HTMLButtonElement>(null);
+  const nextRef = useRef<HTMLButtonElement>(null);
 
   return (
-    <section className="py-8">
-      <div className="container mx-auto px-4">
+    <section className="bg-white py-8">
+      <div className="max-w-[1200px] mx-auto px-5 md:px-10 ">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-xl md:text-2xl font-bold">{title}</h2>
+          <h2 className="text-[20px] font-bold">{title}</h2>
           {showMore && (
-            <button className="text-sm text-gray-600 hover:text-pink-500 flex items-center">
+            <button className="text-sm text-gray-600 flex items-center">
               더보기
               <ChevronRight className="h-4 w-4 ml-1" />
             </button>
           )}
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {hotels.map((hotel) => (
-            <HotelCard key={hotel.id} hotel={hotel} />
-          ))}
+        {/* Swiper Container */}
+        <div className="relative">
+          {/* Custom Navigation Buttons - 영역 밖으로 위치 */}
+          <button
+            ref={prevRef}
+            className="absolute z-10 bg-white shadow-lg rounded-full border border-gray-300 w-12 h-12 flex items-center justify-center swiper-button-prev-custom"
+            style={{
+              top: "90px",
+              left: "-25px",
+              transform: "translateY(-50%)",
+            }}
+            aria-label="이전 호텔 보기"
+          >
+            <ChevronLeft className="w-5 h-5 text-gray-700 font-bold" />
+          </button>
+
+          <button
+            ref={nextRef}
+            className="absolute z-10 bg-white shadow-lg rounded-full border border-gray-300 w-12 h-12 flex items-center justify-center swiper-button-next-custom"
+            style={{
+              top: "90px",
+              right: "-25px",
+              transform: "translateY(-50%)",
+            }}
+            aria-label="다음 호텔 보기"
+          >
+            <ChevronRight className="w-5 h-5 text-gray-700 font-bold" />
+          </button>
+
+          {/* Swiper는 overflow hidden으로 감싸기 */}
+          <div className="overflow-hidden">
+            <Swiper
+            modules={[Navigation]}
+            spaceBetween={16}
+            slidesPerView={2}
+            slidesPerGroup={2}
+            navigation={{
+              prevEl: prevRef.current,
+              nextEl: nextRef.current,
+            }}
+            onBeforeInit={(swiper) => {
+              swiperRef.current = swiper;
+            }}
+            onInit={(swiper) => {
+              // @ts-ignore
+              swiper.params.navigation.prevEl = prevRef.current;
+              // @ts-ignore
+              swiper.params.navigation.nextEl = nextRef.current;
+              swiper.navigation.init();
+              swiper.navigation.update();
+            }}
+            breakpoints={{
+              768: {
+                slidesPerView: 4,
+                slidesPerGroup: 4,
+              },
+            }}
+            className="hotel-swiper"
+          >
+            {hotels.map((hotel) => (
+              <SwiperSlide key={hotel.id}>
+                <HotelCard hotel={hotel} />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+          </div>
+
+          <style jsx global>{`
+            .swiper-button-prev-custom.swiper-button-disabled,
+            .swiper-button-next-custom.swiper-button-disabled {
+              opacity: 0;
+              pointer-events: none;
+            }
+          `}</style>
         </div>
       </div>
     </section>

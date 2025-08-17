@@ -1,19 +1,14 @@
 import Link from "next/link";
-import Image from 'next/image';
 
 export default function Footer() {
   return (
     <footer className="bg-[#f7f7f7] border-t border-[#ebebeb]">
       <div className="max-w-[1200px] mx-auto px-5 md:px-10 py-12">
         {/* Company Info */}
-        <div className="mb-8">
-          <Image
-            src="/images/footer/logo-black.svg"
-            alt="ServiceName"
-            width={120}
-            height={28}
-            className="h-[28px] mb-4"
-          />
+        <div className="mb-8 flex flex-col">
+          <Link href="/" className="text-2xl font-bold text-[#1D8BFF] mb-4">
+            ServiceName
+          </Link>
           <p className="text-[13px] text-[#919191] leading-[1.5] mb-4">
             사업자등록번호 : 101-81-71706 | 대표 : 김병지 | 통신판매업신고 :
             제2018-서울서초-0048호
@@ -152,71 +147,6 @@ export default function Footer() {
               </li>
             </ul>
           </div>
-        </div>
-
-        {/* Awards & Certifications */}
-        <div className="flex flex-wrap gap-4 mb-8">
-          <Image
-            src="/images/footer/cert-isms.svg"
-            alt="ISMS"
-            width={80}
-            height={60}
-            className="h-[60px]"
-          />
-          <Image
-            src="/images/footer/cert-privacy.svg"
-            alt="ePrivacy"
-            width={80}
-            height={60}
-            className="h-[60px]"
-          />
-          <Image
-            src="/images/footer/cert-kftc.svg"
-            alt="KFTC"
-            width={80}
-            height={60}
-            className="h-[60px]"
-          />
-        </div>
-
-        {/* Social Media */}
-        <div className="flex gap-3">
-          <Link href="#" className="hover:opacity-70">
-            <Image
-              src="/images/footer/social-instagram.svg"
-              alt="Instagram"
-              width={32}
-              height={32}
-              className="w-[32px] h-[32px]"
-            />
-          </Link>
-          <Link href="#" className="hover:opacity-70">
-            <Image
-              src="/images/footer/social-blog.svg"
-              alt="Blog"
-              width={32}
-              height={32}
-              className="w-[32px] h-[32px]"
-            />
-          </Link>
-          <Link href="#" className="hover:opacity-70">
-            <Image
-              src="/images/footer/social-facebook.svg"
-              alt="Facebook"
-              width={32}
-              height={32}
-              className="w-[32px] h-[32px]"
-            />
-          </Link>
-          <Link href="#" className="hover:opacity-70">
-            <Image
-              src="/images/footer/social-youtube.svg"
-              alt="YouTube"
-              width={32}
-              height={32}
-              className="w-[32px] h-[32px]"
-            />
-          </Link>
         </div>
       </div>
     </footer>

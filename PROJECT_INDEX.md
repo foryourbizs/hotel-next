@@ -1,7 +1,7 @@
 # 🏨 Hotel Booking Platform - Project Index
 
 > **Next.js 15 기반 호텔 예약 플랫폼**  
-> 여기어때(yeogi.com) 스타일의 숙박 예약 서비스를 구현한 프로덕션 레디 애플리케이션
+> ServiceName(yeogi.com) 스타일의 숙박 예약 서비스를 구현한 프로덕션 레디 애플리케이션
 
 ## 📋 Project Overview
 
@@ -436,4 +436,4 @@ docker run -p 3000:3000 hotel-app
 **Version**: 0.1.0  
 **Last Updated**: 2025-08-16  
 **Status**: Active Development 🟢
-**Style Reference**: Yeogi.com (여기어때)
+**Style Reference**: Yeogi.com (ServiceName)
