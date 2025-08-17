@@ -27,7 +27,7 @@ const sampleHotels = {
       type: "블랙",
       grade: "특급",
       badge: "베스트",
-      tags: ["무료WiFi", "주차가능"],
+      tags: ["무료WiFi", "주차가능", "조식포함", "피트니스", "스파"],
     },
     {
       id: 2,
@@ -41,7 +41,7 @@ const sampleHotels = {
       image: "https://picsum.photos/400/300?random=hotel2",
       type: "블랙",
       grade: "5성급",
-      tags: ["오션뷰", "풀"],
+      tags: ["오션뷰", "풀", "카지노", "키즈룸", "발렛파킹", "셔틀버스"],
     },
     {
       id: 3,
@@ -66,7 +66,7 @@ const sampleHotels = {
       type: "호텔",
       grade: "5성급",
       badge: "럭셔리",
-      tags: ["시티뷰", "라운지"],
+      tags: ["시티뷰", "라운지", "미쉐린레스토랑", "수영장", "사우나", "피트니스", "발렛파킹"],
     },
     {
       id: 5,
@@ -80,7 +80,7 @@ const sampleHotels = {
       image: "https://picsum.photos/400/300?random=hotel5",
       type: "호텔",
       grade: "5성급",
-      tags: ["리버뷰", "카지노"],
+      tags: ["리버뷰", "카지노", "한강뷰", "수영장"],
     },
     {
       id: 6,
@@ -93,7 +93,7 @@ const sampleHotels = {
       type: "복합리조트",
       grade: "5성급",
       badge: "럭셔리",
-      tags: ["카지노", "스파"],
+      tags: ["카지노", "스파", "수영장", "키즈존", "쇼핑몰", "셔틀버스", "무료WiFi", "조식포함"],
     },
     {
       id: 7,
@@ -119,7 +119,7 @@ const sampleHotels = {
       image: "https://picsum.photos/400/300?random=hotel8",
       type: "호텔",
       grade: "5성급",
-      tags: ["오션뷰", "야외수영장"],
+      tags: ["오션뷰", "야외수영장", "비치클럽", "루프탑바", "피트니스"],
     },
   ],
   special: [

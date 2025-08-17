@@ -54,14 +54,33 @@ export default function HotelCard({ hotel }: HotelCardProps) {
         </div>
 
         {/* Hotel Name */}
-        <h3 className="font-bold text-base text-gray-900 mb-2 line-clamp-2 min-h-[48px]">
+        <h3 className="font-bold text-base text-gray-900 mb-1 line-clamp-1">
           {hotel.name}
         </h3>
 
         {/* Location */}
-        <p className="text-sm text-gray-500 mb-3 line-clamp-1">
+        <p className="text-sm text-gray-500 mb-2 line-clamp-1">
           {hotel.location}
         </p>
+
+        {/* Tags */}
+        {hotel.tags && hotel.tags.length > 0 && (
+          <div className="flex flex-wrap gap-1 mb-3">
+            {hotel.tags.slice(0, 2).map((tag, index) => (
+              <span
+                key={index}
+                className="text-xs text-gray-600 bg-gray-100 px-2 py-0.5 rounded"
+              >
+                {tag}
+              </span>
+            ))}
+            {hotel.tags.length > 2 && (
+              <span className="text-xs text-gray-600 bg-gray-100 px-2 py-0.5 rounded">
+                외 {hotel.tags.length - 2}개
+              </span>
+            )}
+          </div>
+        )}
 
         {/* Rating & Reviews */}
         <div className="flex items-center gap-2 mb-4">
@@ -75,9 +94,6 @@ export default function HotelCard({ hotel }: HotelCardProps) {
             </svg>
             <span className="font-bold text-xs">{hotel.rating}</span>
           </div>
-          <span className="text-xs text-gray-500">
-            {hotel.reviewCount.toLocaleString()}명 평가
-          </span>
         </div>
 
         {/* Price Section */}

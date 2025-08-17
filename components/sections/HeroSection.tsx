@@ -130,6 +130,10 @@ export default function HeroSection() {
       } else {
         setCheckOut(date);
         setSelectingCheckIn(true);
+        // Close the date modal after selecting both dates
+        setTimeout(() => {
+          setShowDateModal(false);
+        }, 300); // Small delay for better UX
       }
     }
   };
@@ -387,7 +391,7 @@ export default function HeroSection() {
               <AccessibleHeading
                 level={1}
                 id="hero-heading"
-                className="mb-6 md:mb-8 text-center md:text-left text-[28px] md:text-[40px] lg:text-[48px] font-bold text-white leading-tight"
+                className="mb-6 md:mb-8 text-center md:text-left text-[28px] md:text-[40px] lg:text-[48px] font-bold text-white leading-tight select-none pointer-events-none"
               >
                 합리적인 호텔부터 특가 할인까지,
                 <br />
@@ -446,7 +450,6 @@ export default function HeroSection() {
                       {showSearchModal && (
                         <div
                           className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-xl border border-gray-200 z-50"
-                          onMouseDown={(e) => e.preventDefault()}
                         >
                           <div className="p-6">
                             {/* Recent Searches */}
@@ -465,7 +468,16 @@ export default function HeroSection() {
                                     key={index}
                                     className="flex items-center justify-between"
                                   >
-                                    <div className="flex items-center gap-3">
+                                    <button
+                                      className="flex items-center gap-3 flex-1 text-left hover:bg-gray-50 -ml-2 pl-2 py-1 rounded"
+                                      onMouseDown={(e) => {
+                                        e.preventDefault();
+                                        setSearchQuery(search);
+                                        setTimeout(() => {
+                                          setShowSearchModal(false);
+                                        }, 0);
+                                      }}
+                                    >
                                       <svg
                                         className="w-5 h-5 text-gray-400"
                                         fill="none"
@@ -482,8 +494,8 @@ export default function HeroSection() {
                                       <span className="text-[15px] text-gray-700">
                                         {search}
                                       </span>
-                                    </div>
-                                    <button className="text-gray-400 hover:text-gray-600">
+                                    </button>
+                                    <button className="text-gray-400 hover:text-gray-600 p-1">
                                       <svg
                                         className="w-5 h-5"
                                         fill="none"
@@ -510,9 +522,16 @@ export default function HeroSection() {
                               </h3>
                               <div className="space-y-3">
                                 {popularSearches.map((search, index) => (
-                                  <div
+                                  <button
                                     key={index}
-                                    className="flex items-center gap-3 cursor-pointer hover:bg-gray-50 -mx-2 px-2 py-1 rounded"
+                                    className="flex items-center gap-3 cursor-pointer hover:bg-gray-50 -mx-2 px-2 py-1 rounded w-full text-left"
+                                    onMouseDown={(e) => {
+                                      e.preventDefault();
+                                      setSearchQuery(search);
+                                      setTimeout(() => {
+                                        setShowSearchModal(false);
+                                      }, 0);
+                                    }}
                                   >
                                     <span className="text-[15px] font-medium text-gray-900 w-4">
                                       {index + 1}
@@ -520,7 +539,7 @@ export default function HeroSection() {
                                     <span className="text-[15px] text-gray-700">
                                       {search}
                                     </span>
-                                  </div>
+                                  </button>
                                 ))}
                               </div>
                             </div>

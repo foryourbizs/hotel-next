@@ -3,6 +3,7 @@ import Header from "@/components/layout/Header";
 import EventBanner from "@/components/sections/EventBanner";
 import HeroSection from "@/components/sections/HeroSection";
 import HotelList from "@/components/sections/HotelList";
+import PopularHotels from "@/components/sections/PopularHotels";
 import QuickMenu from "@/components/sections/QuickMenu";
 
 export default function HomePage() {
@@ -13,6 +14,7 @@ export default function HomePage() {
         <HeroSection />
         <QuickMenu />
         <EventBanner />
+        <PopularHotels />
         <HotelList category="recommended" />
       </main>
       <Footer />
