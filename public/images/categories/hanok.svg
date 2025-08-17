@@ -1,8 +1,14 @@
 <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M6 20 L24 8 L42 20 L38 18 L24 12 L10 18 Z" fill="#8B5A3C"/>
+  <!-- 지붕 (삼각형 형태로 꽉 채움) -->
+  <path d="M6 20 L24 8 L42 20" fill="#8B5A3C"/>
+  <!-- 벽체 -->
   <rect x="12" y="18" width="24" height="22" rx="2" fill="#D4A574" opacity="0.8"/>
+  <!-- 문 -->
   <rect x="20" y="32" width="8" height="8" rx="1" fill="#8B5A3C"/>
+  <!-- 왼쪽 창문 -->
   <rect x="16" y="24" width="4" height="4" rx="0.5" fill="#8B5A3C"/>
+  <!-- 오른쪽 창문 -->
   <rect x="28" y="24" width="4" height="4" rx="0.5" fill="#8B5A3C"/>
+  <!-- 창문 가로대 -->
   <path d="M18 30 L30 30" stroke="#8B5A3C" stroke-width="1"/>
 </svg>
