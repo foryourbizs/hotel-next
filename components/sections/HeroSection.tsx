@@ -54,14 +54,15 @@ export default function HeroSection() {
         <div
           className="relative h-[400px] md:h-[500px] lg:h-[536px] bg-cover bg-center"
           style={{
-            backgroundImage: `url('/images/hero-bg.svg')`,
+            backgroundImage: `url('https://picsum.photos/1920/1080?random=hero')`,
           }}
           role="img"
           aria-label="ServiceName 메인 배경 이미지"
         >
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/30" />
+          {/* Gradient overlay - pointer-events-none로 클릭 이벤트 통과 */}
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/30 pointer-events-none" />
 
-          <YeogiContainer className="h-full flex flex-col justify-center">
+          <YeogiContainer className="relative h-full flex flex-col justify-center z-10">
             <FadeIn delay={0.2}>
               <AccessibleHeading
                 level={1}

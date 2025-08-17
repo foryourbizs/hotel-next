@@ -1,10 +1,11 @@
-# 🏨 Hotel Management System - Project Index
+# 🏨 Hotel Booking Platform - Project Index
 
-> Comprehensive documentation and navigation for the Hotel Management Next.js application
+> **Next.js 15 기반 호텔 예약 플랫폼**  
+> 여기어때(yeogi.com) 스타일의 숙박 예약 서비스를 구현한 프로덕션 레디 애플리케이션
 
 ## 📋 Project Overview
 
-**Name**: Hotel Management System  
+**Name**: Hotel Booking Platform (Yeogi Clone)  
 **Framework**: Next.js 15.4.4 with TypeScript  
 **Status**: Development Mode ✅  
 **Server**: http://localhost:3000  
@@ -43,21 +44,34 @@ hotel-next/
 │   │   ├── signin/          # Sign in page
 │   │   └── signup/          # Sign up page
 │   ├── layout.tsx           # Root layout
-│   ├── page.tsx             # Home page
+│   ├── page.tsx             # Home page (Yeogi-style)
 │   └── error.tsx            # Error boundary
 │
 ├── 🧩 components/            # React Components
+│   ├── cards/               # Card components
+│   │   └── HotelCard.tsx    # Hotel card display
 │   ├── forms/               # Form components
 │   │   ├── sign-in-form.tsx
 │   │   └── sign-up-form.tsx
-│   └── ui/                  # UI Components (shadcn/ui)
-│       ├── badge.tsx
-│       ├── button.tsx
-│       ├── card.tsx
-│       ├── form.tsx
-│       ├── input.tsx
-│       ├── label.tsx
-│       └── table.tsx
+│   ├── layout/              # Layout components
+│   │   ├── Header.tsx       # Site header
+│   │   └── Footer.tsx       # Site footer
+│   ├── sections/            # Page sections
+│   │   ├── HeroSection.tsx  # Main hero banner
+│   │   ├── QuickMenu.tsx    # Category quick menu
+│   │   ├── EventBanner.tsx  # Promotional events
+│   │   ├── HotelList.tsx    # Hotel listings
+│   │   └── PopularDestinations.tsx # Popular locations
+│   └── ui/                  # UI Components
+│       ├── Accessibility/   # Accessibility components
+│       ├── Animation/       # Animation utilities
+│       ├── Badge/           # Badge component
+│       ├── Card/            # Card layouts
+│       ├── Container/       # Container layouts
+│       ├── Grid/            # Grid system
+│       ├── Modal/           # Modal dialogs
+│       ├── Typography/      # Text components
+│       └── [shadcn/ui components]
 │
 ├── 🪝 hooks/                 # Custom React Hooks
 │   ├── use-auth-api.ts      # Authentication API hook
@@ -85,6 +99,12 @@ hotel-next/
 ├── 💾 store/                 # State Management
 │   └── auth-store.ts        # Zustand auth store
 │
+├── 🎨 design-system/         # Design System
+│   ├── breakpoints.ts       # Responsive breakpoints
+│   ├── colors.ts            # Color palette
+│   ├── components.ts        # Component styles
+│   └── tokens.ts            # Design tokens
+│
 ├── 📝 types/                 # TypeScript Types
 │   ├── api.ts               # API types
 │   ├── auth.ts              # Authentication types
@@ -103,44 +123,72 @@ hotel-next/
 │   ├── PROJECT_STRUCTURE.md # Architecture details
 │   └── SETUP.md             # Setup instructions
 │
-└── 🔧 scripts/               # Build Scripts
-    ├── generate-crud.js      # CRUD generator
-    └── validate-env.js       # Environment validator
+├── 🔧 scripts/               # Build Scripts
+│   ├── generate-crud.js      # CRUD generator
+│   └── validate-env.js       # Environment validator
+│
+├── 🎨 public/                # Static Assets
+│   └── images/              # Image resources
+│       ├── categories/      # Category icons
+│       ├── events/          # Event banners
+│       ├── footer/          # Footer assets
+│       ├── hotels/          # Hotel images
+│       └── yeogi-logo.svg   # Logo
+│
+└── 🔧 utils/                 # Utility Functions
+    ├── cn.ts                # Class name utilities
+    └── performance.ts       # Performance utilities
 ```
 
 ## 🔑 Key Features
 
 ### ✅ Implemented Features
 
-1. **Authentication System**
+1. **홈페이지 (Yeogi-style)**
+   - Hero section with search
+   - Quick category menu
+   - Event/promotion banners
+   - Hotel recommendations
+   - Popular destinations
+   - Responsive footer
+
+2. **Authentication System**
    - JWT-based authentication
    - Sign in/Sign up forms
    - Token management with auto-refresh
-   - Secure token storage
+   - Proactive token renewal (5min before expiry)
+   - Secure token storage & encryption
 
-2. **API Integration**
+3. **API Integration**
    - Type-safe API client (Ky)
    - React Query integration
    - Request deduplication
    - Advanced query builder
+   - Auto-retry logic
+   - Error handling
 
-3. **State Management**
+4. **UI/UX System**
+   - Yeogi-inspired design
+   - shadcn/ui component library
+   - Custom design system
+   - Form validation with React Hook Form + Zod
+   - Responsive design with Tailwind CSS v4
+   - Accessibility-first components
+   - Framer Motion animations
+
+5. **State Management**
    - Zustand store for auth
    - React Query for server state
    - Custom hooks for data fetching
+   - Token monitoring provider
 
-4. **UI Components**
-   - shadcn/ui component library
-   - Form validation with React Hook Form + Zod
-   - Responsive design with Tailwind CSS
-   - Accessibility-first components
-
-5. **Developer Experience**
+6. **Developer Experience**
    - TypeScript strict mode
    - ESLint configuration
    - Environment validation
    - CRUD code generation
    - Hot reload with Turbopack
+   - Absolute imports
 
 ## 📊 API Endpoints
 
@@ -162,18 +210,34 @@ hotel-next/
 
 ## 🎨 Component Library
 
+### Page Sections
+- **HeroSection**: Main search banner with background
+- **QuickMenu**: Category icons (Hotel, Motel, Pension, etc.)
+- **EventBanner**: Promotional event carousel
+- **HotelList**: Hotel card grid with recommendations
+- **PopularDestinations**: Popular travel destinations
+
+### Layout Components
+- **Header**: Navigation bar with search and user menu
+- **Footer**: Company info, links, certifications
+
 ### Form Components
 - **SignInForm**: User authentication form
 - **SignUpForm**: User registration form
 
-### UI Components (shadcn/ui)
+### UI Components
+- **HotelCard**: Hotel display card with image, price, rating
 - **Badge**: Status indicators
-- **Button**: Interactive buttons
+- **Button**: Interactive buttons with variants
 - **Card**: Content containers
 - **Form**: Form wrapper with validation
 - **Input**: Text input fields
 - **Label**: Form labels
 - **Table**: Data tables
+- **Modal**: Dialog windows
+- **Container**: Responsive containers
+- **Grid**: Grid layout system
+- **Typography**: Text components
 
 ## 🪝 Custom Hooks
 
@@ -196,6 +260,7 @@ hotel-next/
 | **Framework** | Next.js | 15.4.4 |
 | **Language** | TypeScript | 5.x |
 | **Styling** | Tailwind CSS | 4.x |
+| **UI Library** | shadcn/ui | Latest |
 | **State Management** | Zustand | 5.0.6 |
 | **Data Fetching** | TanStack Query | 5.83.0 |
 | **HTTP Client** | Ky | 1.8.2 |
@@ -291,23 +356,34 @@ docker run -p 3000:3000 hotel-app
 
 ## 🎯 Next Steps
 
-1. **Backend Integration**
-   - Set up backend API at port 4000
-   - Configure database connection
-   - Implement hotel-specific endpoints
+1. **Search & Booking Features**
+   - Hotel search functionality
+   - Date picker integration
+   - Room selection interface
+   - Booking flow implementation
+   - Payment gateway integration
 
-2. **Feature Implementation**
-   - Room management system
-   - Booking system
-   - Guest management
-   - Payment integration
-   - Reporting dashboard
+2. **Hotel Management**
+   - Hotel detail pages
+   - Room availability calendar
+   - Pricing management
+   - Review & rating system
+   - Photo galleries
 
-3. **Enhancement**
-   - Add internationalization
-   - Implement real-time updates
-   - Add offline support
-   - Enhance mobile experience
+3. **User Features**
+   - User profile management
+   - Booking history
+   - Wishlist/favorites
+   - Review submission
+   - Loyalty program
+
+4. **Enhancement**
+   - Map integration (Kakao/Google)
+   - Real-time availability
+   - Push notifications
+   - PWA support
+   - Multi-language (i18n)
+   - Dark mode
 
 ## 📚 Related Documentation
 
@@ -334,6 +410,30 @@ docker run -p 3000:3000 hotel-app
 
 ---
 
+## 🎨 Design System
+
+### Color Palette
+- **Primary**: Yeogi Red (#FF385C)
+- **Secondary**: Teal (#00A699)
+- **Neutral**: Gray scale
+- **Success**: Green (#00C851)
+- **Warning**: Orange (#FFBB33)
+- **Error**: Red (#FF4444)
+
+### Breakpoints
+- **Mobile**: 320px - 639px
+- **Tablet**: 640px - 1023px
+- **Desktop**: 1024px - 1279px
+- **Large**: 1280px+
+
+### Typography
+- **Headings**: Pretendard font
+- **Body**: System fonts
+- **Sizes**: xs, sm, base, lg, xl, 2xl
+
+---
+
 **Version**: 0.1.0  
 **Last Updated**: 2025-08-16  
 **Status**: Active Development 🟢
+**Style Reference**: Yeogi.com (여기어때)

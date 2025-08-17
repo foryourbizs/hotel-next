@@ -8,21 +8,21 @@ const events = [
     title: "오늘은 쿠폰 받고",
     subtitle: "내일은 할인 받고",
     bgColor: "#B6E3FF",
-    image: "/images/events/event-banner-1.svg",
+    image: "https://picsum.photos/400/140?random=event1",
   },
   {
     id: 2,
     title: "포인트 2배 리뷰",
     subtitle: "리뷰 쓰고 최대 2,000P",
     bgColor: "#FFE3E1",
-    image: "/images/events/event-banner-2.svg",
+    image: "https://picsum.photos/400/140?random=event2",
   },
   {
     id: 3,
     title: "예약 안심보장제",
     subtitle: "안심하고 예약하세요",
     bgColor: "#E1F5EA",
-    image: "/images/events/event-banner-3.svg",
+    image: "https://picsum.photos/400/140?random=event3",
   },
 ];
 
