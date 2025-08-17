@@ -421,7 +421,7 @@ export default function PopularHotels() {
 
                       <div className="flex items-baseline gap-2 mb-1">
                         {hotel.discount && (
-                          <span className="text-[#FF1C7D] font-bold text-base">
+                          <span className="text-primary font-bold text-base">
                             {hotel.discount}%
                           </span>
                         )}

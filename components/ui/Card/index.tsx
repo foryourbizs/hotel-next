@@ -16,9 +16,9 @@ const variants = {
   hotel:
     "bg-white border border-[#EBEBEB] hover:shadow-lg transition-all duration-300 cursor-pointer",
   banner:
-    "bg-gradient-to-r from-[#1D8BFF] to-[#4DA3FF] text-white overflow-hidden",
+    "bg-gradient-to-r from-primary to-primary-400 text-white overflow-hidden",
   category:
-    "bg-white border border-[#EBEBEB] hover:border-[#1D8BFF] hover:shadow-md transition-all duration-200 cursor-pointer",
+    "bg-white border border-[#EBEBEB] hover:border-primary hover:shadow-md transition-all duration-200 cursor-pointer",
 };
 
 const paddings = {
@@ -89,7 +89,7 @@ export function HotelCard({
         "bg-white border border-[#EBEBEB] hover:shadow-lg transition-all duration-300 cursor-pointer",
         "rounded-lg",
         onClick &&
-          "focus:outline-none focus:ring-2 focus:ring-[#1D8BFF] focus:ring-offset-2",
+          "focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2",
         className
       )}
     >
@@ -147,7 +147,7 @@ export function InfoCard({
       {...props}
     >
       {icon && (
-        <div className="flex justify-center mb-4 text-[#1D8BFF]">{icon}</div>
+        <div className="flex justify-center mb-4 text-primary">{icon}</div>
       )}
 
       {title && (

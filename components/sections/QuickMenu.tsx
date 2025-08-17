@@ -79,7 +79,7 @@ export default function QuickMenu() {
               onClick={() => handleCategoryClick(category.id)}
               className={`flex flex-col items-center justify-center p-3 md:p-4 rounded-lg transition-all duration-300 ${
                 selectedCategory === category.id
-                  ? "bg-[#F0F7FF] border-2 border-[#1D8BFF]"
+                  ? "bg-primary-light border-2 border-primary"
                   : "hover:bg-[#F7F7F7] border-2 border-transparent"
               }`}
               aria-pressed={selectedCategory === category.id}
@@ -98,7 +98,7 @@ export default function QuickMenu() {
               <span
                 className={`text-[11px] md:text-[13px] font-medium text-center transition-colors ${
                   selectedCategory === category.id
-                    ? "text-[#1D8BFF]"
+                    ? "text-primary"
                     : "text-[#616161]"
                 }`}
               >

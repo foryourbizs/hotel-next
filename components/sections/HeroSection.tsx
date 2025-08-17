@@ -201,7 +201,7 @@ export default function HeroSection() {
       } else if (isStart || isEnd) {
         buttonClassName += " text-white font-bold z-20";
       } else if (isMiddle) {
-        buttonClassName += " text-[#1D8BFF] font-medium";
+        buttonClassName += " text-primary font-medium";
       } else if (isWeekend) {
         buttonClassName += " text-red-500 hover:bg-gray-100 hover:rounded-full";
       } else {
@@ -245,7 +245,7 @@ export default function HeroSection() {
                 ></div>
               )}
               {(isStart || isEnd) && (
-                <div className="absolute top-0 left-0 w-10 h-10 bg-[#1D8BFF] rounded-full z-10"></div>
+                <div className="absolute top-0 left-0 w-10 h-10 bg-primary rounded-full z-10"></div>
               )}
             </div>
           )}
@@ -253,7 +253,7 @@ export default function HeroSection() {
           {/* Single date selection - only check-in selected */}
           {checkIn && !checkOut && isStart && (
             <div className="absolute inset-0 pointer-events-none">
-              <div className="absolute top-0 left-0 w-10 h-10 bg-[#1D8BFF] rounded-full z-10"></div>
+              <div className="absolute top-0 left-0 w-10 h-10 bg-primary rounded-full z-10"></div>
             </div>
           )}
 
@@ -266,7 +266,7 @@ export default function HeroSection() {
           >
             {day}
             {isToday && !isStart && !isEnd && (
-              <div className="absolute bottom-1 w-1 h-1 bg-[#1D8BFF] rounded-full"></div>
+              <div className="absolute bottom-1 w-1 h-1 bg-primary rounded-full"></div>
             )}
           </button>
         </div>
@@ -441,7 +441,7 @@ export default function HeroSection() {
                         onChange={(e) => setSearchQuery(e.target.value)}
                         onFocus={() => setShowSearchModal(true)}
                         onBlur={() => setShowSearchModal(false)}
-                        className="w-full h-14 pl-12 pr-4 bg-gray-50 rounded-lg text-[15px] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1D8BFF]"
+                        className="w-full h-14 pl-12 pr-4 bg-gray-50 rounded-lg text-[15px] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary"
                         aria-label="지역 또는 숙소명 입력"
                         aria-required="true"
                       />
@@ -571,7 +571,7 @@ export default function HeroSection() {
                         value={formatDateRange()}
                         onFocus={() => setShowDateModal(true)}
                         onBlur={() => setShowDateModal(false)}
-                        className="w-full h-14 pl-12 pr-4 bg-gray-50 rounded-lg text-[15px] placeholder-gray-700 focus:outline-none focus:ring-2 focus:ring-[#1D8BFF] cursor-pointer"
+                        className="w-full h-14 pl-12 pr-4 bg-gray-50 rounded-lg text-[15px] placeholder-gray-700 focus:outline-none focus:ring-2 focus:ring-primary cursor-pointer"
                         aria-label="체크인 체크아웃 날짜 선택"
                         aria-required="true"
                         readOnly
@@ -617,7 +617,7 @@ export default function HeroSection() {
                         value={`인원 ${guestCount}`}
                         onFocus={() => setShowGuestModal(true)}
                         onBlur={() => setShowGuestModal(false)}
-                        className="w-full h-14 pl-12 pr-4 bg-gray-50 rounded-lg text-[15px] placeholder-gray-700 focus:outline-none focus:ring-2 focus:ring-[#1D8BFF] cursor-pointer"
+                        className="w-full h-14 pl-12 pr-4 bg-gray-50 rounded-lg text-[15px] placeholder-gray-700 focus:outline-none focus:ring-2 focus:ring-primary cursor-pointer"
                         aria-label="투숙 인원 선택"
                         readOnly
                       />
@@ -693,7 +693,7 @@ export default function HeroSection() {
                   {/* Search Button */}
                   <Button
                     type="submit"
-                    className="h-14 px-8 text-[16px] font-bold rounded-lg bg-[#1D8BFF] hover:bg-[#1676DF] text-white"
+                    className="h-14 px-8 text-[16px] font-bold rounded-lg bg-primary hover:bg-primary-hover text-white"
                   >
                     검색
                   </Button>

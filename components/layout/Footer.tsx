@@ -6,7 +6,7 @@ export default function Footer() {
       <div className="max-w-[1200px] mx-auto px-5 md:px-10 py-12">
         {/* Company Info */}
         <div className="mb-8 flex flex-col">
-          <Link href="/" className="text-2xl font-bold text-[#1D8BFF] mb-4">
+          <Link href="/" className="text-2xl font-bold text-primary mb-4">
             ServiceName
           </Link>
           <p className="text-[13px] text-[#919191] leading-[1.5] mb-4">

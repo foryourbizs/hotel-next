@@ -168,7 +168,7 @@ export function FilterModal({
           </button>
           <button
             onClick={onApply}
-            className="flex-1 h-12 bg-[#1D8BFF] text-white rounded-lg hover:bg-[#0066CC] transition-colors"
+            className="flex-1 h-12 bg-primary text-white rounded-lg hover:bg-primary-hover transition-colors"
           >
             적용하기
           </button>
@@ -242,7 +242,7 @@ export function ConfirmModal({
   const confirmButtonClass =
     variant === "danger"
       ? "bg-[#FF2D55] hover:bg-[#E6194B]"
-      : "bg-[#1D8BFF] hover:bg-[#0066CC]";
+      : "bg-primary hover:bg-primary-hover";
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={title} size="sm">

@@ -99,7 +99,7 @@ export default function HotelListSection() {
           <select 
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
-            className="px-4 py-2 border border-[#EBEBEB] rounded-lg text-[14px] focus:outline-none focus:ring-2 focus:ring-[#1D8BFF] md:w-auto w-full"
+            className="px-4 py-2 border border-[#EBEBEB] rounded-lg text-[14px] focus:outline-none focus:ring-2 focus:ring-primary md:w-auto w-full"
           >
             <option value="popular">인기순</option>
             <option value="price-low">낮은 가격순</option>
@@ -119,7 +119,7 @@ export default function HotelListSection() {
               onClick={() => handleFilterClick(filter.id)}
               className={cn(
                 'whitespace-nowrap',
-                selectedFilters.includes(filter.id) ? 'bg-[#1D8BFF] text-white border-[#1D8BFF]' : ''
+                selectedFilters.includes(filter.id) ? 'bg-primary text-white border-primary' : ''
               )}
             >
               {filter.name}
@@ -175,7 +175,7 @@ export default function HotelListSection() {
                       </p>
                     </div>
                     
-                    <button className="text-[#1D8BFF] text-[11px] md:text-[12px] font-medium hover:underline">
+                    <button className="text-primary text-[11px] md:text-[12px] font-medium hover:underline">
                       자세히 보기
                     </button>
                   </div>
@@ -189,7 +189,7 @@ export default function HotelListSection() {
       {/* More Button */}
       <ScrollReveal>
         <div className="text-center mt-8 md:mt-12">
-          <button className="px-6 md:px-8 py-3 border-2 border-[#1D8BFF] text-[#1D8BFF] rounded-lg font-medium hover:bg-[#1D8BFF] hover:text-white transition-all duration-300 w-full md:w-auto">
+          <button className="px-6 md:px-8 py-3 border-2 border-primary text-primary rounded-lg font-medium hover:bg-primary hover:text-white transition-all duration-300 w-full md:w-auto">
             더 많은 숙소 보기
           </button>
         </div>

@@ -20,14 +20,14 @@ interface BadgeProps {
 
 const variants = {
   default: "bg-[#F7F7F7] text-[#616161]",
-  primary: "bg-[#1D8BFF] text-white",
+  primary: "bg-primary text-white",
   secondary: "bg-[#616161] text-white",
-  success: "bg-[#34C759] text-white",
-  warning: "bg-[#FF6B35] text-white",
-  error: "bg-[#FF2D55] text-white",
-  discount: "bg-[#FF2D55] text-white font-bold",
-  new: "bg-[#34C759] text-white font-bold",
-  popular: "bg-gradient-to-r from-[#FF6B35] to-[#FF2D55] text-white font-bold",
+  success: "bg-success text-white",
+  warning: "bg-warning text-white",
+  error: "bg-error text-white",
+  discount: "bg-error text-white font-bold",
+  new: "bg-success text-white font-bold",
+  popular: "bg-gradient-to-r from-warning to-error text-white font-bold",
 };
 
 const sizes = {
@@ -134,7 +134,7 @@ export function CategoryBadge({
       size="md"
       className={cn(
         "cursor-pointer transition-all duration-200",
-        "hover:bg-[#1D8BFF] hover:text-white",
+        "hover:bg-primary hover:text-white",
         className
       )}
     >

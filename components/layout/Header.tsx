@@ -50,7 +50,7 @@ export default function Header() {
             {/* Logo */}
             <Link
               href="/"
-              className="flex items-center text-2xl font-bold text-[#1D8BFF]"
+              className="flex items-center text-2xl font-bold text-primary"
             >
               ServiceName
             </Link>
@@ -121,7 +121,7 @@ export default function Header() {
                           <button className="w-full py-2 text-[14px] text-gray-700 text-left">
                             로그인
                           </button>
-                          <button className="w-full py-2 text-[14px] text-[#1D8BFF] text-left">
+                          <button className="w-full py-2 text-[14px] text-primary text-left">
                             회원가입
                           </button>
                         </div>
@@ -142,7 +142,7 @@ export default function Header() {
                   onClick={() => setActiveTab(tab.id)}
                   className={cn(
                     "px-6 py-3 text-[14px] font-medium relative whitespace-nowrap transition-colors",
-                    activeTab === tab.id ? "text-[#1D8BFF]" : "text-[#616161]"
+                    activeTab === tab.id ? "text-primary" : "text-[#616161]"
                   )}
                 >
                   <span className="relative">
@@ -161,7 +161,7 @@ export default function Header() {
                         animate={{ scaleX: 1 }}
                         exit={{ scaleX: 0 }}
                         transition={{ duration: 0.2 }}
-                        className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#1D8BFF] origin-center"
+                        className="absolute bottom-0 left-0 right-0 h-[2px] bg-primary origin-center"
                       />
                     )}
                   </AnimatePresence>

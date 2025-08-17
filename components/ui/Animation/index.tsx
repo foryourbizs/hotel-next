@@ -240,7 +240,7 @@ export function PulseLoader({ className }: { className?: string }) {
             delay: i * 0.2,
             ease: "easeInOut",
           }}
-          className="w-2 h-2 bg-[#1D8BFF] rounded-full"
+          className="w-2 h-2 bg-primary rounded-full"
         />
       ))}
     </div>

@@ -16,7 +16,7 @@ export function SkipLink({ children, href, className }: {
       className={cn(
         'sr-only focus:not-sr-only',
         'fixed top-4 left-4 z-[999]',
-        'bg-[#1D8BFF] text-white px-4 py-2 rounded-lg',
+        'bg-primary text-white px-4 py-2 rounded-lg',
         'focus:outline-none focus:ring-2 focus:ring-white',
         className
       )}
@@ -50,9 +50,9 @@ export const AccessibleButton = forwardRef<HTMLButtonElement, AccessibleButtonPr
   ({ children, variant = 'primary', loading = false, loadingText = '로딩 중...', className, disabled, ...props }, ref) => {
     const baseClasses = 'focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all duration-200';
     const variantClasses = {
-      primary: 'bg-[#1D8BFF] text-white focus:ring-[#1D8BFF] hover:bg-[#0066CC]',
-      secondary: 'bg-[#F7F7F7] text-[#333] focus:ring-[#1D8BFF] hover:bg-[#EBEBEB]',
-      ghost: 'text-[#616161] focus:ring-[#1D8BFF] hover:bg-[#F7F7F7]',
+      primary: 'bg-primary text-white focus:ring-primary hover:bg-primary-hover',
+      secondary: 'bg-[#F7F7F7] text-[#333] focus:ring-primary hover:bg-[#EBEBEB]',
+      ghost: 'text-[#616161] focus:ring-primary hover:bg-[#F7F7F7]',
     };
 
     return (
@@ -107,7 +107,7 @@ export function AccessibleLink({
   return (
     <a
       className={cn(
-        'focus:outline-none focus:ring-2 focus:ring-[#1D8BFF] focus:ring-offset-2',
+        'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2',
         'rounded-sm transition-all duration-200',
         className
       )}
@@ -169,7 +169,7 @@ export function AccessibleHeading({ children, level, className, id }: Accessible
     <Component
       id={id}
       className={cn(
-        'focus:outline-none focus:ring-2 focus:ring-[#1D8BFF] focus:ring-offset-2 rounded-sm',
+        'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-sm',
         className
       )}
       tabIndex={id ? -1 : undefined}

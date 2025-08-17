@@ -39,7 +39,7 @@ const colors = {
   secondary: "text-[#616161]", // 서브 텍스트
   muted: "text-[#919191]", // 플레이스홀더/비활성
   white: "text-white",
-  blue: "text-[#1D8BFF]", // 메인 블루
+  blue: "text-primary", // 메인 블루
   red: "text-[#FF2D55]", // 할인/특가
 };
 
