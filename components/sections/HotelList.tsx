@@ -2,7 +2,7 @@
 
 import HotelCard from "@/components/cards/HotelCard";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import type { Swiper as SwiperType } from "swiper";
 import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -271,6 +271,7 @@ export default function HotelList({
   const swiperRef = useRef<SwiperType | undefined>(undefined);
   const prevRef = useRef<HTMLButtonElement>(null);
   const nextRef = useRef<HTMLButtonElement>(null);
+  const [isInitialized, setIsInitialized] = useState(false);
 
   return (
     <section className="bg-white pb-8 pt-6">
@@ -287,7 +288,7 @@ export default function HotelList({
       </div>
 
       {/* Swiper Container - 모바일에서는 좌측 패딩만 */}
-      <div className="relative md:max-w-[1200px] md:mx-auto pl-5 md:px-5 lg:px-10">
+      <div className="relative md:max-w-[1200px] md:mx-auto pl-5 md:px-5 lg:px-10 min-h-[280px] md:min-h-[320px]">
         {/* Custom Navigation Buttons - 영역 밖으로 위치 */}
         <button
           ref={prevRef}
@@ -316,7 +317,7 @@ export default function HotelList({
         </button>
 
         {/* Swiper는 overflow hidden으로 감싸기 */}
-        <div className="overflow-hidden">
+        <div className="overflow-hidden min-h-[280px] md:min-h-[320px]">
           <Swiper
             modules={[Navigation]}
             spaceBetween={8}
@@ -337,6 +338,7 @@ export default function HotelList({
               swiper.params.navigation.nextEl = nextRef.current;
               swiper.navigation.init();
               swiper.navigation.update();
+              setIsInitialized(true);
             }}
             breakpoints={{
               768: {
@@ -345,7 +347,7 @@ export default function HotelList({
                 slidesPerGroup: 1,
               },
             }}
-            className="hotel-swiper"
+            className={`hotel-swiper ${isInitialized ? 'swiper-initialized' : ''}`}
           >
             {hotels.map((hotel) => (
               <SwiperSlide key={hotel.id}>

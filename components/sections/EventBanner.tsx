@@ -2,7 +2,7 @@
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import type { Swiper as SwiperType } from "swiper";
 import { Navigation, Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -43,6 +43,7 @@ export default function EventBanner() {
   const swiperRef = useRef<SwiperType | undefined>(undefined);
   const prevRef = useRef<HTMLButtonElement>(null);
   const nextRef = useRef<HTMLButtonElement>(null);
+  const [isInitialized, setIsInitialized] = useState(false);
 
   return (
     <section className="py-8 bg-white">
@@ -53,7 +54,7 @@ export default function EventBanner() {
       </div>
 
       {/* Swiper Container - 모바일에서는 좌측 패딩만 */}
-      <div className="relative md:max-w-[1200px] md:mx-auto pl-5 md:px-5 lg:px-10">
+      <div className="relative md:max-w-[1200px] md:mx-auto pl-5 md:px-5 lg:px-10 min-h-[180px] md:min-h-[200px]">
           {/* Custom Navigation Buttons */}
           <button
             ref={prevRef}
@@ -82,7 +83,7 @@ export default function EventBanner() {
           </button>
 
           {/* Swiper */}
-          <div className="overflow-hidden">
+          <div className="overflow-hidden min-h-[180px] md:min-h-[200px]">
             <Swiper
               modules={[Navigation, Autoplay]}
               spaceBetween={8}
@@ -107,6 +108,7 @@ export default function EventBanner() {
                 swiper.params.navigation.nextEl = nextRef.current;
                 swiper.navigation.init();
                 swiper.navigation.update();
+                setIsInitialized(true);
               }}
               breakpoints={{
                 640: {
@@ -120,22 +122,11 @@ export default function EventBanner() {
                   slidesPerGroup: 1,
                 },
               }}
-              className="event-swiper"
+              className={`event-swiper ${isInitialized ? 'swiper-initialized' : ''}`}
             >
               {events.map((event) => (
                 <SwiperSlide key={event.id}>
-                  <div className="relative overflow-hidden rounded-xl cursor-pointer hover:shadow-lg transition-shadow group">
-                    <div className="relative h-[180px] md:h-[200px]">
-                      <Image
-                        src={event.image}
-                        alt={event.title}
-                        fill
-                        className="object-contain"
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                        priority={event.id <= 3}
-                      />
-                    </div>
-                  </div>
+                  <EventImageCard event={event} />
                 </SwiperSlide>
               ))}
             </Swiper>
@@ -150,5 +141,26 @@ export default function EventBanner() {
           `}</style>
       </div>
     </section>
+  );
+}
+
+// Separate component for handling image state
+function EventImageCard({ event }: { event: typeof events[0] }) {
+  const [imgSrc, setImgSrc] = useState(event.image || "/ph.png");
+  
+  return (
+    <div className="relative overflow-hidden rounded-xl cursor-pointer hover:shadow-lg transition-shadow group">
+      <div className="relative h-[180px] md:h-[200px]">
+        <Image
+          src={imgSrc}
+          alt={event.title}
+          fill
+          className="object-contain"
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          priority={event.id <= 3}
+          onError={() => setImgSrc("/ph.png")}
+        />
+      </div>
+    </div>
   );
 }

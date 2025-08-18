@@ -57,9 +57,27 @@ const categories = [
   },
 ];
 
+// Separate component for handling image state
+function CategoryImage({ icon, name }: { icon: string; name: string }) {
+  const [imgSrc, setImgSrc] = useState(icon || "/ph.png");
+  
+  return (
+    <Image
+      src={imgSrc}
+      alt=""
+      width={48}
+      height={48}
+      className="w-full h-full object-contain"
+      aria-hidden="true"
+      onError={() => setImgSrc("/ph.png")}
+    />
+  );
+}
+
 export default function QuickMenu() {
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -90,13 +108,14 @@ export default function QuickMenu() {
 
       {/* Mobile: Swiper, Desktop: Grid */}
       {isMobile ? (
-        <div className="relative">
+        <div className="relative min-h-[70px]">
           <Swiper
             modules={[FreeMode]}
             spaceBetween={8}
             slidesPerView={4.5}
             freeMode={true}
-            className="quick-menu-swiper"
+            className={`quick-menu-swiper ${isInitialized ? 'swiper-initialized' : ''}`}
+            onInit={() => setIsInitialized(true)}
           >
             {categories.map((category) => (
               <SwiperSlide key={category.id}>
@@ -112,14 +131,7 @@ export default function QuickMenu() {
                   aria-describedby={`category-${category.id}-description`}
                 >
                   <div className="w-[40px] h-[40px] mb-1">
-                    <Image
-                      src={category.icon}
-                      alt=""
-                      width={48}
-                      height={48}
-                      className="w-full h-full object-contain"
-                      aria-hidden="true"
-                    />
+                    <CategoryImage icon={category.icon} name={category.name} />
                   </div>
                   <span
                     className={`text-[11px] font-medium text-center transition-colors ${
@@ -157,14 +169,7 @@ export default function QuickMenu() {
                 aria-describedby={`category-${category.id}-description`}
               >
                 <div className="w-[48px] h-[48px] mb-2">
-                  <Image
-                    src={category.icon}
-                    alt=""
-                    width={48}
-                    height={48}
-                    className="w-full h-full object-contain"
-                    aria-hidden="true"
-                  />
+                  <CategoryImage icon={category.icon} name={category.name} />
                 </div>
                 <span
                   className={`text-[13px] font-medium text-center transition-colors ${

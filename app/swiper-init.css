@@ -1,0 +1,103 @@
+/* Swiper 초기 로딩 스타일 */
+.swiper:not(.swiper-initialized) {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper:not(.swiper-initialized) .swiper-wrapper {
+  display: flex !important;
+}
+
+/* 각 Swiper별 gap 설정 */
+.hotel-swiper:not(.swiper-initialized) .swiper-wrapper {
+  gap: 8px;
+}
+
+.event-swiper:not(.swiper-initialized) .swiper-wrapper {
+  gap: 8px;
+}
+
+.popular-hotels-swiper:not(.swiper-initialized) .swiper-wrapper {
+  gap: 8px;
+}
+
+.quick-menu-swiper:not(.swiper-initialized) .swiper-wrapper {
+  gap: 8px;
+}
+
+.swiper:not(.swiper-initialized) .swiper-slide {
+  flex-shrink: 0;
+  height: 100%;
+  position: relative;
+  transition-property: transform;
+}
+
+/* 초기 로딩 시 슬라이드 너비 강제 설정 */
+.hotel-swiper:not(.swiper-initialized) .swiper-slide {
+  width: calc((100% - 8px) / 1.4) !important;
+}
+
+.event-swiper:not(.swiper-initialized) .swiper-slide {
+  width: calc((100% - 8px) / 1.1) !important;
+}
+
+.popular-hotels-swiper:not(.swiper-initialized) .swiper-slide {
+  width: calc((100% - 8px) / 1.2) !important;
+}
+
+.quick-menu-swiper:not(.swiper-initialized) .swiper-slide {
+  width: calc((100% - 24px) / 4.5) !important;
+}
+
+/* 모바일 이상 사이즈 */
+@media (min-width: 640px) {
+  .event-swiper:not(.swiper-initialized) .swiper-wrapper {
+    gap: 16px;
+  }
+  
+  .event-swiper:not(.swiper-initialized) .swiper-slide {
+    width: calc((100% - 16px) / 2) !important;
+  }
+  
+  .popular-hotels-swiper:not(.swiper-initialized) .swiper-wrapper {
+    gap: 16px;
+  }
+  
+  .popular-hotels-swiper:not(.swiper-initialized) .swiper-slide {
+    width: calc((100% - 40px) / 2.5) !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .hotel-swiper:not(.swiper-initialized) .swiper-wrapper {
+    gap: 16px;
+  }
+  
+  .hotel-swiper:not(.swiper-initialized) .swiper-slide {
+    width: calc((100% - 48px) / 4) !important;
+  }
+  
+  .popular-hotels-swiper:not(.swiper-initialized) .swiper-slide {
+    width: calc((100% - 56px) / 3.5) !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .event-swiper:not(.swiper-initialized) .swiper-slide {
+    width: calc((100% - 32px) / 3) !important;
+  }
+  
+  .popular-hotels-swiper:not(.swiper-initialized) .swiper-wrapper {
+    gap: 20px;
+  }
+  
+  .popular-hotels-swiper:not(.swiper-initialized) .swiper-slide {
+    width: calc((100% - 80px) / 4.5) !important;
+  }
+}
+
+@media (min-width: 1280px) {
+  .popular-hotels-swiper:not(.swiper-initialized) .swiper-slide {
+    width: calc((100% - 80px) / 5) !important;
+  }
+}

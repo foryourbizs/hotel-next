@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import "./globals.css";
+import "./swiper-init.css";
 
 import { QueryProvider } from "@/providers/query-provider";
 import { TokenMonitorProvider } from "@/providers/token-monitor-provider";

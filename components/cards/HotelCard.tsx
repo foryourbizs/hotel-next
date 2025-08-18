@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useState } from "react";
 
 interface HotelCardProps {
   hotel: {
@@ -21,16 +22,19 @@ interface HotelCardProps {
 }
 
 export default function HotelCard({ hotel }: HotelCardProps) {
+  const [imgSrc, setImgSrc] = useState(hotel.image || "/ph.png");
+
   return (
     <div className="bg-white overflow-hidden cursor-pointer">
       {/* Image Container */}
       <div className="relative aspect-[3/2] overflow-hidden">
         <Image
-          src={hotel.image || "/images/no-image-placeholder.svg"}
+          src={imgSrc}
           alt={hotel.name}
           fill
           className="object-cover rounded-lg"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+          onError={() => setImgSrc("/ph.png")}
         />
       </div>
 
