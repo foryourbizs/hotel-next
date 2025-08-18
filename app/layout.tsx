@@ -18,8 +18,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Next.js App with Authentication",
-  description: "Next.js 15 + TypeScript + ky HTTP Client",
+  title: "ServiceName",
+  description: "ServiceName",
 };
 
 export default function RootLayout({
@@ -33,16 +33,14 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <QueryProvider>
-          <TokenMonitorProvider>
-            {children}
-          </TokenMonitorProvider>
+          <TokenMonitorProvider>{children}</TokenMonitorProvider>
           <Toaster
             position="top-right"
             toastOptions={{
               duration: 4000,
               style: {
-                background: '#363636',
-                color: '#fff',
+                background: "#363636",
+                color: "#fff",
               },
             }}
           />
