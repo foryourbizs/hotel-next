@@ -7,8 +7,8 @@ import {
 } from "@/components/ui/Accessibility";
 import { Button } from "@/components/ui/button";
 import { ServiceContainer } from "@/components/ui/Container";
-import { motion, AnimatePresence } from "framer-motion";
-import { useRef, useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 
 export default function HeroSection() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -21,8 +21,10 @@ export default function HeroSection() {
   const [guestCount, setGuestCount] = useState(2);
   const [currentMonth, setCurrentMonth] = useState(new Date(2025, 7)); // August 2025
   const [selectingCheckIn, setSelectingCheckIn] = useState(true);
-  const [showMobileSearchFullscreen, setShowMobileSearchFullscreen] = useState(false);
-  const [mobileSearchStep, setMobileSearchStep] = useState<"search" | "date" | "guest">("search");
+  const [showMobileSearch, setShowMobileSearch] = useState(false);
+  const [showMobileSearchInput, setShowMobileSearchInput] = useState(false);
+  const [showMobileDate, setShowMobileDate] = useState(false);
+  const [showMobileGuest, setShowMobileGuest] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
   const recentSearches = ["리츠 모텔", "신림역"];
@@ -45,11 +47,34 @@ export default function HeroSection() {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
-    
+
     checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
+
+  // Disable body scroll when any mobile modal is open
+  useEffect(() => {
+    if (
+      showMobileSearch ||
+      showMobileSearchInput ||
+      showMobileDate ||
+      showMobileGuest
+    ) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [
+    showMobileSearch,
+    showMobileSearchInput,
+    showMobileDate,
+    showMobileGuest,
+  ]);
 
   // Helper functions for calendar
   const formatDate = (date: Date | null) => {
@@ -132,7 +157,7 @@ export default function HeroSection() {
         // Close the date modal after selecting both dates
         setTimeout(() => {
           setShowDateModal(false);
-        }, 300); // Small delay for better UX
+        }, 100); // Faster closing for better UX
       }
     }
   };
@@ -377,7 +402,7 @@ export default function HeroSection() {
         <div
           className="relative h-[380px] md:h-[500px] lg:h-[536px] bg-cover bg-center"
           style={{
-            backgroundImage: `url('https://picsum.photos/1920/1080?random=hero')`,
+            backgroundImage: `url('/images/hero.png')`,
           }}
           role="img"
           aria-label="ServiceName 메인 배경 이미지"
@@ -452,8 +477,7 @@ export default function HeroSection() {
                           onFocus={() => {
                             // Mobile: Open fullscreen modal
                             if (isMobile) {
-                              setShowMobileSearchFullscreen(true);
-                              setMobileSearchStep("search");
+                              setShowMobileSearch(true);
                             } else {
                               setShowSearchModal(true);
                             }
@@ -568,7 +592,7 @@ export default function HeroSection() {
 
                     {/* Date Picker - Desktop Only */}
                     <div className="hidden md:flex md:w-[300px] relative">
-                      <div className="relative">
+                      <div className="relative w-full">
                         <svg
                           className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"
                           fill="none"
@@ -586,7 +610,13 @@ export default function HeroSection() {
                           type="text"
                           placeholder="08.16 토 - 08.17 일 (1박)"
                           value={formatDateRange()}
-                          onFocus={() => setShowDateModal(true)}
+                          onFocus={() => {
+                            if (isMobile) {
+                              setShowMobileDate(true);
+                            } else {
+                              setShowDateModal(true);
+                            }
+                          }}
                           onBlur={() => setShowDateModal(false)}
                           className="w-full h-14 pl-12 pr-4 bg-gray-100 rounded-lg text-[15px] placeholder-gray-700 focus:outline-none focus:ring-2 focus:ring-primary cursor-pointer"
                           aria-label="체크인 체크아웃 날짜 선택"
@@ -632,7 +662,13 @@ export default function HeroSection() {
                           type="text"
                           placeholder="인원 2"
                           value={`인원 ${guestCount}`}
-                          onFocus={() => setShowGuestModal(true)}
+                          onFocus={() => {
+                            if (isMobile) {
+                              setShowMobileGuest(true);
+                            } else {
+                              setShowGuestModal(true);
+                            }
+                          }}
                           onBlur={() => setShowGuestModal(false)}
                           className="w-full h-14 pl-12 pr-4 bg-gray-100 rounded-lg text-[15px] placeholder-gray-700 focus:outline-none focus:ring-2 focus:ring-primary cursor-pointer"
                           aria-label="투숙 인원 선택"
@@ -712,7 +748,7 @@ export default function HeroSection() {
                     {/* Search Button - Desktop Only */}
                     <Button
                       type="submit"
-                      className="hidden md:flex h-14 px-8 text-[16px] font-bold rounded-lg bg-primary hover:bg-primary-hover text-white items-center justify-center"
+                      className="hidden md:flex h-14 px-8 text-[16px] font-bold rounded-lg bg-primary hover:bg-primary-hover text-white items-center justify-center cursor-pointer"
                     >
                       검색
                     </Button>
@@ -724,29 +760,15 @@ export default function HeroSection() {
         </div>
       </section>
 
-      {/* Mobile Fullscreen Search Modal */}
-      <AnimatePresence>
-        {showMobileSearchFullscreen && (
-          <motion.div
-            initial={{ y: "100%", opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: "100%", opacity: 0 }}
-            transition={{ 
-              duration: 0.3,
-              ease: "easeOut"
-            }}
-            className="fixed inset-0 bg-white z-[100] md:hidden"
-          >
-            <div className="flex flex-col h-full">
+      {/* Mobile Fullscreen Main Modal */}
+      {showMobileSearch && (
+        <div className="fixed inset-0 bg-white z-[100] md:hidden overflow-y-auto">
+          <div className="flex flex-col h-full overflow-y-auto">
             {/* Header */}
             <div className="flex items-center justify-between p-4 border-b">
-              <h2 className="text-lg font-bold">
-                {mobileSearchStep === "search" && "어디로 떠나시나요?"}
-                {mobileSearchStep === "date" && "날짜를 선택해 주세요."}
-                {mobileSearchStep === "guest" && "인원을 설정해주세요."}
-              </h2>
+              <h2 className="text-lg font-bold">숙소 검색</h2>
               <button
-                onClick={() => setShowMobileSearchFullscreen(false)}
+                onClick={() => setShowMobileSearch(false)}
                 className="p-2"
               >
                 <svg
@@ -767,11 +789,15 @@ export default function HeroSection() {
 
             {/* Content */}
             <div className="flex-1 overflow-y-auto">
-              {/* Search Step */}
-              {mobileSearchStep === "search" && (
-                <div className="p-4">
-                  {/* Search Input */}
-                  <div className="relative mb-6">
+              <div className="p-4">
+                {/* Search Input Button */}
+                <button
+                  onClick={() => {
+                    setShowMobileSearchInput(true);
+                  }}
+                  className="relative mb-4 w-full"
+                >
+                  <div className="relative">
                     <svg
                       className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"
                       fill="none"
@@ -785,171 +811,433 @@ export default function HeroSection() {
                         d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                       />
                     </svg>
-                    <input
-                      type="text"
-                      placeholder="여행지나 숙소를 검색해보세요."
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-full h-14 pl-12 pr-4 bg-gray-100 rounded-lg text-[16px] placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary"
-                      autoFocus
+                    <div className="w-full h-14 pl-12 pr-4 bg-gray-100 rounded-lg text-[16px] text-left flex items-center">
+                      <span
+                        className={
+                          searchQuery ? "text-gray-900" : "text-gray-500"
+                        }
+                      >
+                        {searchQuery || "여행지나 숙소를 검색해보세요."}
+                      </span>
+                    </div>
+                  </div>
+                </button>
+
+                {/* Date Selection Button */}
+                <button
+                  onClick={() => {
+                    setShowMobileDate(true);
+                  }}
+                  className="w-full mb-4 p-4 bg-white border border-gray-200 rounded-lg flex items-center justify-between"
+                >
+                  <div className="flex items-center">
+                    <svg
+                      className="w-5 h-5 text-gray-400 mr-3"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                      />
+                    </svg>
+                    <span className="text-[16px] text-gray-700">
+                      {formatDateRange() || "날짜 선택"}
+                    </span>
+                  </div>
+                  <svg
+                    className="w-5 h-5 text-gray-400"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
                     />
-                  </div>
+                  </svg>
+                </button>
 
-                  {/* Date Selection Button */}
-                  <button
-                    onClick={() => setMobileSearchStep("date")}
-                    className="w-full mb-4 p-4 bg-white border border-gray-200 rounded-lg flex items-center justify-between"
+                {/* Guest Selection Button */}
+                <button
+                  onClick={() => {
+                    setShowMobileGuest(true);
+                  }}
+                  className="w-full p-4 bg-white border border-gray-200 rounded-lg flex items-center justify-between"
+                >
+                  <div className="flex items-center">
+                    <svg
+                      className="w-5 h-5 text-gray-400 mr-3"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                      />
+                    </svg>
+                    <span className="text-[16px] text-gray-700">
+                      인원 {guestCount}명
+                    </span>
+                  </div>
+                  <svg
+                    className="w-5 h-5 text-gray-400"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
                   >
-                    <div className="flex items-center">
-                      <svg
-                        className="w-5 h-5 text-gray-400 mr-3"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                        />
-                      </svg>
-                      <span className="text-[16px] text-gray-700">
-                        {formatDateRange() || "08.17 일 - 08.18 월 (1박)"}
-                      </span>
-                    </div>
-                    <span className="text-primary text-sm">변경</span>
-                  </button>
-
-                  {/* Guest Selection Button */}
-                  <button
-                    onClick={() => setMobileSearchStep("guest")}
-                    className="w-full p-4 bg-white border border-gray-200 rounded-lg flex items-center justify-between"
-                  >
-                    <div className="flex items-center">
-                      <svg
-                        className="w-5 h-5 text-gray-400 mr-3"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                        />
-                      </svg>
-                      <span className="text-[16px] text-gray-700">
-                        인원 {guestCount}
-                      </span>
-                    </div>
-                    <span className="text-primary text-sm">변경</span>
-                  </button>
-                </div>
-              )}
-
-              {/* Date Step */}
-              {mobileSearchStep === "date" && (
-                <div className="p-4">
-                  <p className="text-gray-600 mb-4">날짜를 선택해 주세요.</p>
-                  <div className="mb-6">
-                    {renderCalendar(0)}
-                  </div>
-                  <button
-                    onClick={() => setMobileSearchStep("guest")}
-                    className="w-full bg-primary text-white py-4 rounded-lg font-medium text-[16px]"
-                  >
-                    {checkIn && checkOut ? `${Math.ceil((checkOut.getTime() - checkIn.getTime()) / (1000 * 60 * 60 * 24))}박 적용` : "날짜 선택"}
-                  </button>
-                </div>
-              )}
-
-              {/* Guest Step */}
-              {mobileSearchStep === "guest" && (
-                <div className="p-4">
-                  <div className="mb-4">
-                    <h3 className="text-[16px] font-medium mb-2">인원을 설정해주세요.</h3>
-                    <p className="text-sm text-gray-500">
-                      유아 및 아동도 인원수에 포함해주세요.
-                    </p>
-                  </div>
-
-                  <div className="flex items-center justify-between py-8">
-                    <div>
-                      <span className="text-[16px] text-gray-700">인원</span>
-                      <p className="text-sm text-gray-500">
-                        유아 및 아동도 인원수에 포함해주세요.
-                      </p>
-                    </div>
-                    <div className="flex items-center gap-4">
-                      <button
-                        onClick={() => setGuestCount(Math.max(1, guestCount - 1))}
-                        className="w-10 h-10 rounded-full border-2 border-gray-300 flex items-center justify-center"
-                      >
-                        <svg
-                          className="w-5 h-5"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M20 12H4"
-                          />
-                        </svg>
-                      </button>
-                      <span className="text-xl font-bold w-8 text-center">
-                        {guestCount}
-                      </span>
-                      <button
-                        onClick={() => setGuestCount(guestCount + 1)}
-                        className="w-10 h-10 rounded-full border-2 border-gray-300 flex items-center justify-center"
-                      >
-                        <svg
-                          className="w-5 h-5"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M12 4v16m8-8H4"
-                          />
-                        </svg>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              )}
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </button>
+              </div>
             </div>
 
             {/* Footer Button */}
             <div className="p-4 border-t">
               <button
                 onClick={() => {
-                  if (mobileSearchStep === "guest" || (mobileSearchStep === "search" && searchQuery)) {
-                    setShowMobileSearchFullscreen(false);
+                  if (searchQuery && checkIn && checkOut) {
+                    setShowMobileSearch(false);
                     handleSearch();
-                  } else if (mobileSearchStep === "search") {
-                    setMobileSearchStep("date");
-                  } else if (mobileSearchStep === "date") {
-                    setMobileSearchStep("guest");
                   }
                 }}
-                className="w-full bg-primary text-white py-4 rounded-lg font-medium text-[16px]"
+                className="w-full bg-primary text-white py-4 rounded-lg font-medium text-[16px] cursor-pointer"
               >
                 검색
               </button>
             </div>
           </div>
-        </motion.div>
+        </div>
       )}
-    </AnimatePresence>
+
+      {/* Mobile Fullscreen Date Modal */}
+      {showMobileDate && (
+        <div className="fixed inset-0 bg-white z-[101] md:hidden overflow-y-auto">
+          <div className="flex flex-col h-full">
+            {/* Header */}
+            <div className="flex items-center p-4 border-b">
+              <button
+                onClick={() => {
+                  setShowMobileDate(false);
+                }}
+                className="p-2 -ml-2"
+              >
+                <svg
+                  className="w-6 h-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 19l-7-7 7-7"
+                  />
+                </svg>
+              </button>
+              <h2 className="text-lg font-bold ml-2">날짜 선택</h2>
+            </div>
+
+            {/* Content */}
+            <div className="flex-1 overflow-y-auto p-4">
+              {/* Calendar */}
+              <div>{renderCalendar(0)}</div>
+            </div>
+
+            {/* Footer Button */}
+            <div className="p-4 border-t">
+              <button
+                onClick={() => {
+                  if (checkIn && checkOut) {
+                    setShowMobileDate(false);
+                  }
+                }}
+                className="w-full bg-primary text-white py-4 rounded-lg font-medium text-[16px] cursor-pointer"
+              >
+                선택 완료
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Mobile Fullscreen Search Input Modal */}
+      {showMobileSearchInput && (
+        <div className="fixed inset-0 bg-white z-[102] md:hidden overflow-y-auto">
+          <div className="flex flex-col h-full">
+            {/* Header */}
+            <div className="flex items-center p-4 border-b">
+              <button
+                onClick={() => {
+                  setShowMobileSearchInput(false);
+                }}
+                className="p-2 -ml-2"
+              >
+                <svg
+                  className="w-6 h-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 19l-7-7 7-7"
+                  />
+                </svg>
+              </button>
+              <h2 className="text-lg font-bold ml-2">어디로 떠나시나요?</h2>
+            </div>
+
+            {/* Content */}
+            <div className="flex-1 overflow-y-auto">
+              <div className="p-4">
+                {/* Search Input */}
+                <div className="relative mb-6">
+                  <svg
+                    className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                    />
+                  </svg>
+                  <input
+                    type="text"
+                    placeholder="여행지나 숙소를 검색해보세요."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full h-14 pl-12 pr-4 bg-gray-100 rounded-lg text-[16px] placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary"
+                    autoFocus
+                  />
+                </div>
+
+                {/* Recent Searches */}
+                {recentSearches.length > 0 && (
+                  <div className="mb-6">
+                    <div className="flex items-center justify-between mb-3">
+                      <h3 className="text-[15px] font-medium text-gray-700">
+                        최근 검색 조건
+                      </h3>
+                      <button className="text-[13px] text-gray-500">
+                        전체삭제
+                      </button>
+                    </div>
+                    <div className="space-y-2">
+                      {recentSearches.map((search, index) => (
+                        <div
+                          key={index}
+                          className="flex items-center justify-between"
+                        >
+                          <button
+                            className="flex items-center gap-3 flex-1 text-left py-2"
+                            onClick={() => {
+                              setSearchQuery(search);
+                              setShowMobileSearchInput(false);
+                            }}
+                          >
+                            <svg
+                              className="w-5 h-5 text-gray-400"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                              />
+                            </svg>
+                            <span className="text-[15px] text-gray-700">
+                              {search}
+                            </span>
+                          </button>
+                          <button className="text-gray-400 p-2">
+                            <svg
+                              className="w-5 h-5"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M6 18L18 6M6 6l12 12"
+                              />
+                            </svg>
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Popular Searches */}
+                <div className="mb-6">
+                  <h3 className="text-[15px] font-medium text-gray-700 mb-3">
+                    여기어때 검색 순위
+                  </h3>
+                  <div className="space-y-2">
+                    {popularSearches.map((search, index) => (
+                      <button
+                        key={index}
+                        className="flex items-center gap-3 w-full text-left py-2"
+                        onClick={() => {
+                          setSearchQuery(search);
+                          setShowMobileSearchInput(false);
+                        }}
+                      >
+                        <span className="text-[15px] font-medium text-gray-900 w-4">
+                          {index + 1}
+                        </span>
+                        <span className="text-[15px] text-gray-700">
+                          {search}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Footer Button */}
+            <div className="p-4 border-t">
+              <button
+                onClick={() => {
+                  if (searchQuery) {
+                    setShowMobileSearchInput(false);
+                  }
+                }}
+                className="w-full bg-primary text-white py-4 rounded-lg font-medium text-[16px] cursor-pointer"
+              >
+                선택 완료
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Mobile Fullscreen Guest Modal */}
+      {showMobileGuest && (
+        <div className="fixed inset-0 bg-white z-[101] md:hidden overflow-y-auto">
+          <div className="flex flex-col h-full">
+            {/* Header */}
+            <div className="flex items-center p-4 border-b">
+              <button
+                onClick={() => {
+                  setShowMobileGuest(false);
+                }}
+                className="p-2 -ml-2"
+              >
+                <svg
+                  className="w-6 h-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 19l-7-7 7-7"
+                  />
+                </svg>
+              </button>
+              <h2 className="text-lg font-bold ml-2">인원 선택</h2>
+            </div>
+
+            {/* Content */}
+            <div className="flex-1 overflow-y-auto p-4">
+              <div className="mb-4">
+                <h3 className="text-[16px] font-medium mb-2">
+                  인원을 설정해주세요.
+                </h3>
+                <p className="text-sm text-gray-500">
+                  유아 및 아동도 인원수에 포함해주세요.
+                </p>
+              </div>
+
+              <div className="flex items-center justify-between py-2">
+                <div className="flex items-center gap-4">
+                  <button
+                    onClick={() => setGuestCount(Math.max(1, guestCount - 1))}
+                    className="w-10 h-10 rounded-full border-2 border-gray-300 flex items-center justify-center"
+                  >
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M20 12H4"
+                      />
+                    </svg>
+                  </button>
+                  <span className="text-xl font-bold w-8 text-center">
+                    {guestCount}
+                  </span>
+                  <button
+                    onClick={() => setGuestCount(guestCount + 1)}
+                    className="w-10 h-10 rounded-full border-2 border-gray-300 flex items-center justify-center"
+                  >
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 4v16m8-8H4"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Footer Button */}
+            <div className="p-4 border-t">
+              <button
+                onClick={() => {
+                  setShowMobileGuest(false);
+                }}
+                className="w-full bg-primary text-white py-4 rounded-lg font-medium text-[16px] cursor-pointer"
+              >
+                선택 완료
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

@@ -8,7 +8,11 @@ import {
 import { HoverScale, StaggeredFadeIn } from "@/components/ui/Animation";
 import { SectionContainer } from "@/components/ui/Container";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import "swiper/css";
+import "swiper/css/free-mode";
+import { FreeMode } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
 
 const categories = [
   {
@@ -55,6 +59,17 @@ const categories = [
 
 export default function QuickMenu() {
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   const handleCategoryClick = (categoryId: number) => {
     setSelectedCategory(categoryId);
@@ -65,55 +80,112 @@ export default function QuickMenu() {
   };
 
   return (
-    <SectionContainer background="white" className="py-6 md:py-8 lg:py-8">
+    <SectionContainer
+      background="white"
+      className="py-0 md:py-0 lg:py-0 pt-6 md:pt-6 lg:pt-6"
+    >
       <AccessibleHeading level={2} id="quick-menu-heading" className="sr-only">
         숙소 카테고리 선택
       </AccessibleHeading>
 
-      {/* Mobile: 4 columns, Desktop: 8 columns */}
-      <StaggeredFadeIn className="grid grid-cols-4 md:grid-cols-8 gap-3 md:gap-4">
-        {categories.map((category) => (
-          <HoverScale key={category.id}>
-            <AccessibleButton
-              variant="ghost"
-              onClick={() => handleCategoryClick(category.id)}
-              className={`flex flex-col items-center justify-center p-3 md:p-4 rounded-lg transition-all duration-300 ${
-                selectedCategory === category.id
-                  ? "bg-primary-light border-2 border-primary"
-                  : "hover:bg-[#F7F7F7] border-2 border-transparent"
-              }`}
-              aria-pressed={selectedCategory === category.id}
-              aria-describedby={`category-${category.id}-description`}
-            >
-              <div className="w-[40px] h-[40px] md:w-[48px] md:h-[48px] mb-2 md:mb-3">
-                <Image
-                  src={category.icon}
-                  alt=""
-                  width={48}
-                  height={48}
-                  className="w-full h-full object-contain"
-                  aria-hidden="true"
-                />
-              </div>
-              <span
-                className={`text-[11px] md:text-[13px] font-medium text-center transition-colors ${
-                  selectedCategory === category.id
-                    ? "text-primary"
-                    : "text-[#616161]"
-                }`}
-              >
-                {category.name}
-              </span>
+      {/* Mobile: Swiper, Desktop: Grid */}
+      {isMobile ? (
+        <div className="relative">
+          <Swiper
+            modules={[FreeMode]}
+            spaceBetween={8}
+            slidesPerView={4.5}
+            freeMode={true}
+            className="quick-menu-swiper"
+          >
+            {categories.map((category) => (
+              <SwiperSlide key={category.id}>
+                <AccessibleButton
+                  variant="ghost"
+                  onClick={() => handleCategoryClick(category.id)}
+                  className={`flex flex-col items-center justify-center p-2 rounded-lg transition-all duration-300 w-full ${
+                    selectedCategory === category.id
+                      ? "bg-primary-light"
+                      : "hover:bg-[#F7F7F7]"
+                  }`}
+                  aria-pressed={selectedCategory === category.id}
+                  aria-describedby={`category-${category.id}-description`}
+                >
+                  <div className="w-[40px] h-[40px] mb-1">
+                    <Image
+                      src={category.icon}
+                      alt=""
+                      width={48}
+                      height={48}
+                      className="w-full h-full object-contain"
+                      aria-hidden="true"
+                    />
+                  </div>
+                  <span
+                    className={`text-[11px] font-medium text-center transition-colors ${
+                      selectedCategory === category.id
+                        ? "text-primary"
+                        : "text-[#616161]"
+                    }`}
+                  >
+                    {category.name}
+                  </span>
 
-              <ScreenReaderOnly>
-                {selectedCategory === category.id
-                  ? "선택됨"
-                  : "선택하려면 클릭하세요"}
-              </ScreenReaderOnly>
-            </AccessibleButton>
-          </HoverScale>
-        ))}
-      </StaggeredFadeIn>
+                  <ScreenReaderOnly>
+                    {selectedCategory === category.id
+                      ? "선택됨"
+                      : "선택하려면 클릭하세요"}
+                  </ScreenReaderOnly>
+                </AccessibleButton>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
+      ) : (
+        <StaggeredFadeIn className="grid grid-cols-8 gap-3">
+          {categories.map((category) => (
+            <HoverScale key={category.id}>
+              <AccessibleButton
+                variant="ghost"
+                onClick={() => handleCategoryClick(category.id)}
+                className={`flex flex-col items-center justify-center p-3 rounded-lg transition-all duration-300 ${
+                  selectedCategory === category.id
+                    ? "bg-primary-light"
+                    : "hover:bg-[#F7F7F7]"
+                }`}
+                aria-pressed={selectedCategory === category.id}
+                aria-describedby={`category-${category.id}-description`}
+              >
+                <div className="w-[48px] h-[48px] mb-2">
+                  <Image
+                    src={category.icon}
+                    alt=""
+                    width={48}
+                    height={48}
+                    className="w-full h-full object-contain"
+                    aria-hidden="true"
+                  />
+                </div>
+                <span
+                  className={`text-[13px] font-medium text-center transition-colors ${
+                    selectedCategory === category.id
+                      ? "text-primary"
+                      : "text-[#616161]"
+                  }`}
+                >
+                  {category.name}
+                </span>
+
+                <ScreenReaderOnly>
+                  {selectedCategory === category.id
+                    ? "선택됨"
+                    : "선택하려면 클릭하세요"}
+                </ScreenReaderOnly>
+              </AccessibleButton>
+            </HoverScale>
+          ))}
+        </StaggeredFadeIn>
+      )}
     </SectionContainer>
   );
 }

@@ -50,13 +50,14 @@ export default function EventBanner() {
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-[20px] font-bold">이벤트</h2>
         </div>
+      </div>
 
-        {/* Swiper Container */}
-        <div className="relative">
+      {/* Swiper Container - 모바일에서는 좌측 패딩만 */}
+      <div className="relative md:max-w-[1200px] md:mx-auto pl-5 md:px-5 lg:px-10">
           {/* Custom Navigation Buttons */}
           <button
             ref={prevRef}
-            className="absolute z-10 bg-white shadow-lg rounded-full border border-gray-300 w-12 h-12 flex items-center justify-center hidden md:flex"
+            className="absolute z-10 bg-white shadow-lg rounded-full border border-gray-300 w-12 h-12 hidden md:flex items-center justify-center"
             style={{
               top: "50%",
               left: "-25px",
@@ -69,7 +70,7 @@ export default function EventBanner() {
 
           <button
             ref={nextRef}
-            className="absolute z-10 bg-white shadow-lg rounded-full border border-gray-300 w-12 h-12 flex items-center justify-center hidden md:flex"
+            className="absolute z-10 bg-white shadow-lg rounded-full border border-gray-300 w-12 h-12 hidden md:flex items-center justify-center"
             style={{
               top: "50%",
               right: "-25px",
@@ -84,8 +85,8 @@ export default function EventBanner() {
           <div className="overflow-hidden">
             <Swiper
               modules={[Navigation, Autoplay]}
-              spaceBetween={16}
-              slidesPerView={1}
+              spaceBetween={8}
+              slidesPerView={1.1}
               slidesPerGroup={1}
               navigation={{
                 prevEl: prevRef.current,
@@ -109,10 +110,12 @@ export default function EventBanner() {
               }}
               breakpoints={{
                 640: {
+                  spaceBetween: 16,
                   slidesPerView: 2,
                   slidesPerGroup: 1,
                 },
                 1024: {
+                  spaceBetween: 16,
                   slidesPerView: 3,
                   slidesPerGroup: 1,
                 },
@@ -145,7 +148,6 @@ export default function EventBanner() {
               pointer-events: none;
             }
           `}</style>
-        </div>
       </div>
     </section>
   );

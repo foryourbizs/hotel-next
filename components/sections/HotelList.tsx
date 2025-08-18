@@ -273,8 +273,8 @@ export default function HotelList({
   const nextRef = useRef<HTMLButtonElement>(null);
 
   return (
-    <section className="bg-white py-8">
-      <div className="max-w-[1200px] mx-auto px-5 md:px-10 ">
+    <section className="bg-white pb-8 pt-6">
+      <div className="max-w-[1200px] mx-auto px-5 md:px-10">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-[24px] font-bold">{title}</h2>
           {showMore && (
@@ -284,82 +284,84 @@ export default function HotelList({
             </button>
           )}
         </div>
+      </div>
 
-        {/* Swiper Container */}
-        <div className="relative">
-          {/* Custom Navigation Buttons - 영역 밖으로 위치 */}
-          <button
-            ref={prevRef}
-            className="absolute z-10 bg-white shadow-lg rounded-full border border-gray-300 w-12 h-12 flex items-center justify-center swiper-button-prev-custom hidden md:flex"
-            style={{
-              top: "90px",
-              left: "-25px",
-              transform: "translateY(-50%)",
+      {/* Swiper Container - 모바일에서는 좌측 패딩만 */}
+      <div className="relative md:max-w-[1200px] md:mx-auto pl-5 md:px-5 lg:px-10">
+        {/* Custom Navigation Buttons - 영역 밖으로 위치 */}
+        <button
+          ref={prevRef}
+          className="absolute z-10 rounded-full w-12 h-12 hidden md:flex items-center justify-center swiper-button-prev-custom cursor-pointer"
+          style={{
+            top: "90px",
+            left: "-25px",
+            transform: "translateY(-50%)",
+          }}
+          aria-label="이전 호텔 보기"
+        >
+          <ChevronLeft className="w-5 h-5 text-gray-700 font-bold" />
+        </button>
+
+        <button
+          ref={nextRef}
+          className="absolute z-10 rounded-full w-12 h-12 hidden md:flex items-center justify-center swiper-button-prev-custom cursor-pointer"
+          style={{
+            top: "90px",
+            right: "-25px",
+            transform: "translateY(-50%)",
+          }}
+          aria-label="다음 호텔 보기"
+        >
+          <ChevronRight className="w-5 h-5 text-gray-700 font-bold" />
+        </button>
+
+        {/* Swiper는 overflow hidden으로 감싸기 */}
+        <div className="overflow-hidden">
+          <Swiper
+            modules={[Navigation]}
+            spaceBetween={8}
+            slidesPerView={1.4}
+            slidesPerGroup={1}
+            loop={true}
+            navigation={{
+              prevEl: prevRef.current,
+              nextEl: nextRef.current,
             }}
-            aria-label="이전 호텔 보기"
-          >
-            <ChevronLeft className="w-5 h-5 text-gray-700 font-bold" />
-          </button>
-
-          <button
-            ref={nextRef}
-            className="absolute z-10 bg-white shadow-lg rounded-full border border-gray-300 w-12 h-12 flex items-center justify-center swiper-button-next-custom hidden md:flex"
-            style={{
-              top: "90px",
-              right: "-25px",
-              transform: "translateY(-50%)",
+            onBeforeInit={(swiper) => {
+              swiperRef.current = swiper;
             }}
-            aria-label="다음 호텔 보기"
+            onInit={(swiper) => {
+              // @ts-expect-error - Swiper navigation type issue
+              swiper.params.navigation.prevEl = prevRef.current;
+              // @ts-expect-error - Swiper navigation type issue
+              swiper.params.navigation.nextEl = nextRef.current;
+              swiper.navigation.init();
+              swiper.navigation.update();
+            }}
+            breakpoints={{
+              768: {
+                spaceBetween: 16,
+                slidesPerView: 4,
+                slidesPerGroup: 1,
+              },
+            }}
+            className="hotel-swiper"
           >
-            <ChevronRight className="w-5 h-5 text-gray-700 font-bold" />
-          </button>
-
-          {/* Swiper는 overflow hidden으로 감싸기 */}
-          <div className="overflow-hidden">
-            <Swiper
-              modules={[Navigation]}
-              spaceBetween={16}
-              slidesPerView={2}
-              slidesPerGroup={2}
-              navigation={{
-                prevEl: prevRef.current,
-                nextEl: nextRef.current,
-              }}
-              onBeforeInit={(swiper) => {
-                swiperRef.current = swiper;
-              }}
-              onInit={(swiper) => {
-                // @ts-expect-error - Swiper navigation type issue
-                swiper.params.navigation.prevEl = prevRef.current;
-                // @ts-expect-error - Swiper navigation type issue
-                swiper.params.navigation.nextEl = nextRef.current;
-                swiper.navigation.init();
-                swiper.navigation.update();
-              }}
-              breakpoints={{
-                768: {
-                  slidesPerView: 4,
-                  slidesPerGroup: 4,
-                },
-              }}
-              className="hotel-swiper"
-            >
-              {hotels.map((hotel) => (
-                <SwiperSlide key={hotel.id}>
-                  <HotelCard hotel={hotel} />
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </div>
-
-          <style jsx global>{`
-            .swiper-button-prev-custom.swiper-button-disabled,
-            .swiper-button-next-custom.swiper-button-disabled {
-              opacity: 0;
-              pointer-events: none;
-            }
-          `}</style>
+            {hotels.map((hotel) => (
+              <SwiperSlide key={hotel.id}>
+                <HotelCard hotel={hotel} />
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </div>
+
+        <style jsx global>{`
+          .swiper-button-prev-custom.swiper-button-disabled,
+          .swiper-button-next-custom.swiper-button-disabled {
+            opacity: 0;
+            pointer-events: none;
+          }
+        `}</style>
       </div>
     </section>
   );

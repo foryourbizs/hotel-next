@@ -339,72 +339,78 @@ export default function PopularHotels() {
             ))}
           </div>
         </div>
+      </div>
 
-        {/* Hotels Carousel */}
-        <div className="relative">
-          {/* Custom Navigation Buttons */}
-          <button
-            ref={prevRef}
-            className="absolute z-10 bg-white shadow-lg rounded-full border border-gray-300 w-12 h-12 flex items-center justify-center"
-            style={{
-              top: "50%",
-              left: "-25px",
-              transform: "translateY(-50%)",
+      {/* Swiper Container - 모바일에서는 좌측 패딩만 */}
+      <div className="relative md:max-w-[1200px] md:mx-auto pl-5 md:px-5 lg:px-10">
+        {/* Custom Navigation Buttons */}
+        <button
+          ref={prevRef}
+          className="absolute z-10 bg-white shadow-lg rounded-full border border-gray-300 w-12 h-12 hidden md:flex items-center justify-center"
+          style={{
+            top: "50%",
+            left: "-25px",
+            transform: "translateY(-50%)",
+          }}
+          aria-label="이전 호텔 보기"
+        >
+          <ChevronLeft className="w-5 h-5 text-gray-700" />
+        </button>
+
+        <button
+          ref={nextRef}
+          className="absolute z-10 bg-white shadow-lg rounded-full border border-gray-300 w-12 h-12 hidden md:flex items-center justify-center"
+          style={{
+            top: "50%",
+            right: "-25px",
+            transform: "translateY(-50%)",
+          }}
+          aria-label="다음 호텔 보기"
+        >
+          <ChevronRight className="w-5 h-5 text-gray-700" />
+        </button>
+
+        <div className="overflow-hidden">
+          <Swiper
+            modules={[Navigation]}
+            spaceBetween={8}
+            slidesPerView={1.2}
+            loop={true}
+            navigation={{
+              prevEl: prevRef.current,
+              nextEl: nextRef.current,
             }}
-            aria-label="이전 호텔 보기"
-          >
-            <ChevronLeft className="w-5 h-5 text-gray-700" />
-          </button>
-
-          <button
-            ref={nextRef}
-            className="absolute z-10 bg-white shadow-lg rounded-full border border-gray-300 w-12 h-12 flex items-center justify-center"
-            style={{
-              top: "50%",
-              right: "-25px",
-              transform: "translateY(-50%)",
+            onBeforeInit={(swiper) => {
+              swiperRef.current = swiper;
             }}
-            aria-label="다음 호텔 보기"
+            onInit={(swiper) => {
+              // @ts-expect-error - Swiper navigation type issue
+              swiper.params.navigation.prevEl = prevRef.current;
+              // @ts-expect-error - Swiper navigation type issue
+              swiper.params.navigation.nextEl = nextRef.current;
+              swiper.navigation.init();
+              swiper.navigation.update();
+            }}
+            breakpoints={{
+              640: {
+                spaceBetween: 16,
+                slidesPerView: 2.5,
+              },
+              768: {
+                spaceBetween: 16,
+                slidesPerView: 3.5,
+              },
+              1024: {
+                spaceBetween: 20,
+                slidesPerView: 4.5,
+              },
+              1280: {
+                spaceBetween: 20,
+                slidesPerView: 5,
+              },
+            }}
+            className="popular-hotels-swiper"
           >
-            <ChevronRight className="w-5 h-5 text-gray-700" />
-          </button>
-
-          <div className="overflow-hidden">
-            <Swiper
-              modules={[Navigation]}
-              spaceBetween={20}
-              slidesPerView={1.2}
-              navigation={{
-                prevEl: prevRef.current,
-                nextEl: nextRef.current,
-              }}
-              onBeforeInit={(swiper) => {
-                swiperRef.current = swiper;
-              }}
-              onInit={(swiper) => {
-                // @ts-expect-error - Swiper navigation type issue
-                swiper.params.navigation.prevEl = prevRef.current;
-                // @ts-expect-error - Swiper navigation type issue
-                swiper.params.navigation.nextEl = nextRef.current;
-                swiper.navigation.init();
-                swiper.navigation.update();
-              }}
-              breakpoints={{
-                640: {
-                  slidesPerView: 2.5,
-                },
-                768: {
-                  slidesPerView: 3.5,
-                },
-                1024: {
-                  slidesPerView: 4.5,
-                },
-                1280: {
-                  slidesPerView: 5,
-                },
-              }}
-              className="popular-hotels-swiper"
-            >
               {displayHotels.map((hotel) => (
                 <SwiperSlide key={hotel.id}>
                   <div className="relative cursor-pointer group">
@@ -462,7 +468,6 @@ export default function PopularHotels() {
               ))}
             </Swiper>
           </div>
-        </div>
       </div>
     </section>
   );
