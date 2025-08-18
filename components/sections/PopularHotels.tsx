@@ -6,6 +6,7 @@ import { useRef, useState } from "react";
 import type { Swiper as SwiperType } from "swiper";
 import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { ImageSkeleton } from "@/components/ui/Skeleton";
 
 // Import Swiper styles
 import "swiper/css";
@@ -428,19 +429,27 @@ export default function PopularHotels() {
 // Separate component for handling image state
 function HotelImageCard({ hotel }: { hotel: Hotel }) {
   const [imgSrc, setImgSrc] = useState(hotel.image || "/ph.png");
+  const [isLoading, setIsLoading] = useState(true);
   
   return (
     <div className="relative cursor-pointer group">
       {/* Image */}
-      <div className="relative aspect-[4/5]">
+      <div className="relative aspect-[4/5]" style={{ borderRadius: "12px", overflow: "hidden" }}>
+        {isLoading && <ImageSkeleton />}
         <Image
           src={imgSrc}
           alt={hotel.name}
           fill
-          className="object-cover"
+          className={`object-cover transition-opacity duration-300 ${
+            isLoading ? "opacity-0" : "opacity-100"
+          }`}
           sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 20vw"
           style={{ borderRadius: "12px" }}
-          onError={() => setImgSrc("/ph.png")}
+          onError={() => {
+            setImgSrc("/ph.png");
+            setIsLoading(false);
+          }}
+          onLoad={() => setIsLoading(false)}
         />
 
         {/* Rank Badge - Bottom Left */}

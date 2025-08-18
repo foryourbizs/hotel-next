@@ -6,6 +6,7 @@ import { useRef, useState } from "react";
 import type { Swiper as SwiperType } from "swiper";
 import { Navigation, Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { ImageSkeleton } from "@/components/ui/Skeleton";
 
 // Import Swiper styles
 import "swiper/css";
@@ -147,18 +148,26 @@ export default function EventBanner() {
 // Separate component for handling image state
 function EventImageCard({ event }: { event: typeof events[0] }) {
   const [imgSrc, setImgSrc] = useState(event.image || "/ph.png");
+  const [isLoading, setIsLoading] = useState(true);
   
   return (
     <div className="relative overflow-hidden rounded-xl cursor-pointer hover:shadow-lg transition-shadow group">
       <div className="relative h-[180px] md:h-[200px]">
+        {isLoading && <ImageSkeleton />}
         <Image
           src={imgSrc}
           alt={event.title}
           fill
-          className="object-contain"
+          className={`object-contain transition-opacity duration-300 ${
+            isLoading ? "opacity-0" : "opacity-100"
+          }`}
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           priority={event.id <= 3}
-          onError={() => setImgSrc("/ph.png")}
+          onError={() => {
+            setImgSrc("/ph.png");
+            setIsLoading(false);
+          }}
+          onLoad={() => setIsLoading(false)}
         />
       </div>
     </div>

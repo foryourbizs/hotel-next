@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
+import { ImageSkeleton } from "@/components/ui/Skeleton";
 
 interface HotelCardProps {
   hotel: {
@@ -23,18 +24,26 @@ interface HotelCardProps {
 
 export default function HotelCard({ hotel }: HotelCardProps) {
   const [imgSrc, setImgSrc] = useState(hotel.image || "/ph.png");
+  const [isLoading, setIsLoading] = useState(true);
 
   return (
     <div className="bg-white overflow-hidden cursor-pointer">
       {/* Image Container */}
-      <div className="relative aspect-[3/2] overflow-hidden">
+      <div className="relative aspect-[3/2] overflow-hidden rounded-lg">
+        {isLoading && <ImageSkeleton />}
         <Image
           src={imgSrc}
           alt={hotel.name}
           fill
-          className="object-cover rounded-lg"
+          className={`object-cover rounded-lg transition-opacity duration-300 ${
+            isLoading ? "opacity-0" : "opacity-100"
+          }`}
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-          onError={() => setImgSrc("/ph.png")}
+          onError={() => {
+            setImgSrc("/ph.png");
+            setIsLoading(false);
+          }}
+          onLoad={() => setIsLoading(false)}
         />
       </div>
 

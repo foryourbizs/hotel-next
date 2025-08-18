@@ -13,6 +13,7 @@ import "swiper/css";
 import "swiper/css/free-mode";
 import { FreeMode } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { Skeleton } from "@/components/ui/Skeleton";
 
 const categories = [
   {
@@ -60,17 +61,29 @@ const categories = [
 // Separate component for handling image state
 function CategoryImage({ icon, name }: { icon: string; name: string }) {
   const [imgSrc, setImgSrc] = useState(icon || "/ph.png");
+  const [isLoading, setIsLoading] = useState(true);
   
   return (
-    <Image
-      src={imgSrc}
-      alt=""
-      width={48}
-      height={48}
-      className="w-full h-full object-contain"
-      aria-hidden="true"
-      onError={() => setImgSrc("/ph.png")}
-    />
+    <>
+      {isLoading && (
+        <Skeleton className="absolute inset-0 rounded-lg" />
+      )}
+      <Image
+        src={imgSrc}
+        alt=""
+        width={48}
+        height={48}
+        className={`w-full h-full object-contain transition-opacity duration-200 ${
+          isLoading ? "opacity-0" : "opacity-100"
+        }`}
+        aria-hidden="true"
+        onError={() => {
+          setImgSrc("/ph.png");
+          setIsLoading(false);
+        }}
+        onLoad={() => setIsLoading(false)}
+      />
+    </>
   );
 }
 
@@ -130,7 +143,7 @@ export default function QuickMenu() {
                   aria-pressed={selectedCategory === category.id}
                   aria-describedby={`category-${category.id}-description`}
                 >
-                  <div className="w-[40px] h-[40px] mb-1">
+                  <div className="w-[40px] h-[40px] mb-1 relative">
                     <CategoryImage icon={category.icon} name={category.name} />
                   </div>
                   <span
@@ -168,7 +181,7 @@ export default function QuickMenu() {
                 aria-pressed={selectedCategory === category.id}
                 aria-describedby={`category-${category.id}-description`}
               >
-                <div className="w-[48px] h-[48px] mb-2">
+                <div className="w-[48px] h-[48px] mb-2 relative">
                   <CategoryImage icon={category.icon} name={category.name} />
                 </div>
                 <span
